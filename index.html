@@ -173,23 +173,16 @@ header {
   font-weight: 600;
   line-height: 1.3;
   margin-bottom: 6px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
+/* line-clamp dihilangkan agar teks tampil full */
 .card-desc {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.45;
   margin-bottom: 12px;
 }
 .card-bottom {
-  margin-top: auto;
+  margin-top: auto; /* Ini membuat bottom selalu rata ke bawah meski tinggi teks beda-beda */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -348,18 +341,17 @@ header {
   </div>
 </div>
 
-<!-- ==================== AYAM (image1 - image4) ==================== -->
+<!-- ==================== AYAM ==================== -->
 <section class="section active" id="chicken">
   <div class="section-title">Ayam Marinated</div>
   <div class="menu-grid">
-    <!-- Menu 1 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image1.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Chili Lime Marinated Chicken Breast</h3>
-      <p class="card-desc">Bold burst of zesty lime meets fiery chili heat.</p>
+      <p class="card-desc">A bold burst of zesty lime meets fiery chili heat — a tropical flavor dance that wakes up your taste buds with every juicy bite!</p>
       <div class="card-bottom">
         <span class="kcal-text">150 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Chili Lime Marinated Chicken Breast',38000)">
@@ -367,14 +359,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 2 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image2.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Italian Herb Marinated Chicken Breast</h3>
-      <p class="card-desc">Warmth of Mediterranean with oregano, basil & thyme.</p>
+      <p class="card-desc">Experience the warmth of the Mediterranean with aromatic oregano, basil, and thyme swirling through every succulent piece — a true taste of Italy on your plate.</p>
       <div class="card-bottom">
         <span class="kcal-text">165 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Italian Herb Marinated Chicken Breast',38000)">
@@ -382,14 +373,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 3 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image3.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Lemon Garlic Marinated Chicken Breast</h3>
-      <p class="card-desc">Bright lemon and fragrant garlic wrapping tender chicken.</p>
+      <p class="card-desc">A refreshing blend of bright lemon and fragrant garlic, wrapping tender chicken in a timeless, flavorful hug that's light yet unforgettable.</p>
       <div class="card-bottom">
         <span class="kcal-text">140 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Lemon Garlic Marinated Chicken Breast',38000)">
@@ -397,14 +387,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 4 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image4.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Taichan Marinated Chicken Breast</h3>
-      <p class="card-desc">Grilled chicken drenched in spicy lime chili sauce.</p>
+      <p class="card-desc">Simple yet electrifying, grilled chicken breast drenched in spicy, tangy lime chili sauce — a legendary street food sensation that keeps you coming back for more.</p>
       <div class="card-bottom">
         <span class="kcal-text">165 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Taichan Marinated Chicken Breast',38000)">
@@ -415,18 +404,17 @@ header {
   </div>
 </section>
 
-<!-- ==================== NASI & MIE (image5 - image8) ==================== -->
+<!-- ==================== NASI & MIE ==================== -->
 <section class="section" id="rice">
   <div class="section-title">Nasi & Mie</div>
   <div class="menu-grid">
-    <!-- Menu 5 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$36k</span>
         <img src="image5.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Nasi Ayam Kampung Kalasan</h3>
-      <p class="card-desc">Fried free-range chicken marinated in sweet spices.</p>
+      <p class="card-desc">A traditional Indonesian dish featuring tender, deep-fried free-range chicken (ayam kampung) marinated in sweet-spiced Kalasan-style seasoning. Served with steamed white rice, fresh vegetables, and a side of sweet and spicy sambal.</p>
       <div class="card-bottom">
         <span class="kcal-text">600 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Nasi Ayam Kampung Kalasan',36000)">
@@ -434,14 +422,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 6 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$36k</span>
         <img src="image6.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Nasi Ayam Goreng Kampung Berempah</h3>
-      <p class="card-desc">Aromatic crispy chicken, rich blend of spices.</p>
+      <p class="card-desc">A bold and aromatic Indonesian dish featuring crispy fried free-range chicken, marinated in a rich blend of traditional spices and herbs. The chicken is deep-fried to golden perfection, delivering a crunchy outer layer and tender, flavorful meat inside.</p>
       <div class="card-bottom">
         <span class="kcal-text">600 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Nasi Ayam Goreng Kampung Berempah',36000)">
@@ -449,14 +436,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 7 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$23k</span>
         <img src="image7.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Indomie Rebus Telur</h3>
-      <p class="card-desc">Satisfying comfort dish in flavorful broth.</p>
+      <p class="card-desc">A simple yet satisfying comfort dish made with Indomie instant noodles, served hot in a flavorful broth and topped with a soft-boiled or poached egg. The noodles are seasoned with Indomie's signature spice blend, creating a savory, slightly spicy, and umami-rich taste.</p>
       <div class="card-bottom">
         <span class="kcal-text">450 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Indomie Rebus Telur',23000)">
@@ -464,14 +450,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 8 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$23k</span>
         <img src="image8.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Indomie Goreng Telur</h3>
-      <p class="card-desc">Chewy noodles with savory-sweet seasoning blend.</p>
+      <p class="card-desc">A beloved Indonesian instant noodle dish featuring stir-fried Indomie noodles tossed in a savory-sweet seasoning blend, then topped with a fried egg for extra richness. The noodles are chewy and flavorful, with hints of soy sauce, garlic, and a touch of spice.</p>
       <div class="card-bottom">
         <span class="kcal-text">450 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Indomie Goreng Telur',23000)">
@@ -482,18 +467,17 @@ header {
   </div>
 </section>
 
-<!-- ==================== JUICE & DETOX (image9 - image17) ==================== -->
+<!-- ==================== JUICE & DETOX ==================== -->
 <section class="section" id="juice">
   <div class="section-title">Juice & Detox</div>
   <div class="menu-grid">
-    <!-- Menu 9 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image9.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Green Zest</h3>
-      <p class="card-desc">Bok Choy, Cucumber, Pineapple detox blend.</p>
+      <p class="card-desc">A hydrating and cleansing green juice packed with antioxidants and enzymes to flush toxins, support liver health, and boost your metabolism.</p>
       <div class="card-bottom">
         <span class="kcal-text">70 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Green Zest',38000)">
@@ -501,14 +485,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 10 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image10.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Reduce Bloating</h3>
-      <p class="card-desc">Celery, Cucumber, Ginger fights inflammation.</p>
+      <p class="card-desc">This refreshing and warming detox blend reduces bloating, supports digestion, and fights inflammation with natural ingredients.</p>
       <div class="card-bottom">
         <span class="kcal-text">50 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Reduce Bloating',38000)">
@@ -516,14 +499,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 11 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image11.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Rebit Balance</h3>
-      <p class="card-desc">Beet, Carrot, Apple, Pear energy boost.</p>
+      <p class="card-desc">An earthy, nutrient-rich juice that supports blood circulation, improves stamina, and gives your body a natural energy boost.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Rebit Balance',38000)">
@@ -531,14 +513,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 12 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image12.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Nectar Balance</h3>
-      <p class="card-desc">Apple, Carrot, Pear for daily detox.</p>
+      <p class="card-desc">A light and naturally sweet juice, perfect for daily detox. Rich in fiber, vitamins, and antioxidants to support your overall wellness.</p>
       <div class="card-bottom">
         <span class="kcal-text">90 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Nectar Balance',38000)">
@@ -546,14 +527,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 13 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image13.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Apple</h3>
-      <p class="card-desc">Cold-pressed, crisp apple goodness.</p>
+      <p class="card-desc">Just apples. Nothing else. Cold-pressed, crisp, and naturally sweet — it's pure green (or red) apple goodness in a glass. No sugar, no additives, no drama.</p>
       <div class="card-bottom">
         <span class="kcal-text">110 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'100% Pure Apple',38000)">
@@ -561,14 +541,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 14 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image14.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Orange</h3>
-      <p class="card-desc">Fresh sun-kissed oranges squeezed pure.</p>
+      <p class="card-desc">Straight from the fruit — no fakes, no fluff. Just fresh, sun-kissed oranges squeezed into a glass of juicy joy. Naturally sweet, vitamin-packed, and ready to brighten your day.</p>
       <div class="card-bottom">
         <span class="kcal-text">110 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'100% Pure Orange',38000)">
@@ -576,14 +555,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 15 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image15.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Pear</h3>
-      <p class="card-desc">Smooth, mellow, juicy golden pear.</p>
+      <p class="card-desc">Smooth, mellow, and naturally sweet — just real pears in liquid form. No sugar, no additives — only the juicy, golden taste of 100% pure pear.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'100% Pure Pear',38000)">
@@ -591,14 +569,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 16 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image16.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Grape</h3>
-      <p class="card-desc">Ripe grapes squeezed with zero additives.</p>
+      <p class="card-desc">All the juicy goodness of ripe grapes, squeezed fresh with zero additives. Sweet, tangy, and bursting with natural flavor — just grapes doing their thing.</p>
       <div class="card-bottom">
         <span class="kcal-text">150 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'100% Pure Grape',38000)">
@@ -606,14 +583,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 17 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
         <img src="image17.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Pineapple</h3>
-      <p class="card-desc">Tropical sunshine in a glass, purely pressed.</p>
+      <p class="card-desc">Tropical sunshine in a glass. Freshly pressed pineapple juice, naturally sweet and tangy, with zero additives. Just pure, juicy pineapple goodness.</p>
       <div class="card-bottom">
         <span class="kcal-text">130 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'100% Pure Pineapple',38000)">
@@ -624,19 +600,18 @@ header {
   </div>
 </section>
 
-<!-- ==================== SMOOTHIE (image18 - image27) ==================== -->
+<!-- ==================== SMOOTHIE ==================== -->
 <section class="section" id="smoothie">
   <div class="section-title">Smoothie Bowl & Special</div>
   <div class="addon-note">+ Tambah Whey Protein: Rp 35k</div>
   <div class="menu-grid">
-    <!-- Menu 18 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
         <img src="image18.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Magenta Bliss</h3>
-      <p class="card-desc">Creamy dragon fruit velvet potion.</p>
+      <p class="card-desc">Smooth. Dreamy. Irresistibly vibrant. Creamy dragon fruit blended into a velvety purple potion. Lightly sweet, beautifully bold — it's wellness with a wink of indulgence.</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Magenta Bliss',45000)">
@@ -644,14 +619,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 19 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
         <img src="image19.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Mango Mistique</h3>
-      <p class="card-desc">Luscious mango swirled with citrus.</p>
+      <p class="card-desc">A tropical seduction in every sip. Luscious mango purée swirled with a splash of citrus and a hint of coconut — this golden elixir is smooth, juicy, and impossible to resist.</p>
       <div class="card-bottom">
         <span class="kcal-text">120 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Mango Mistique',45000)">
@@ -659,14 +633,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 20 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
         <img src="image20.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Choco Monkey</h3>
-      <p class="card-desc">Ripe banana & dark chocolate blend.</p>
+      <p class="card-desc">Sinfully smooth and playfully rich. Ripe banana and dark chocolate collide in this decadent shake — thick, creamy, and oh-so-satisfying. It's dessert in a glass.</p>
       <div class="card-bottom">
         <span class="kcal-text">250 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Choco Monkey',45000)">
@@ -674,14 +647,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 21 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
         <img src="image21.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Pinky Dream</h3>
-      <p class="card-desc">Creamy strawberry with vanilla hints.</p>
+      <p class="card-desc">Soft, sweet, and blushing with flavor. A creamy strawberry fusion with hints of vanilla or rose. Delicate yet indulgent — like sipping a daydream.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Pinky Dream',45000)">
@@ -689,14 +661,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 22 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
         <img src="image22.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Pinacolada</h3>
-      <p class="card-desc">Juicy pineapple and creamy coconut.</p>
+      <p class="card-desc">Your tropical escape — no passport required. Juicy pineapple and creamy coconut come together in a refreshingly rich mocktail that tastes like pure island bliss.</p>
       <div class="card-bottom">
         <span class="kcal-text">200 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Pinacolada',45000)">
@@ -704,14 +675,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 23 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
         <img src="image23.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Banana Glow</h3>
-      <p class="card-desc">Mango meets banana in pure magic.</p>
+      <p class="card-desc">When mango meets banana, it's pure smoothie magic. Think tropical sunset in a cup, with vibes smoother than your best pickup line. Creamy, dreamy, and dangerously sippable.</p>
       <div class="card-bottom">
         <span class="kcal-text">200 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Banana Glow',30000)">
@@ -719,14 +689,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 24 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
         <img src="image24.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Golden Sunset</h3>
-      <p class="card-desc">Tropical mango and strawberry mix.</p>
+      <p class="card-desc">Like a tropical vacation in a cup—if your travel guide was a mango and your bestie was a strawberry. Sweet, cheeky, and totally irresistible. Zero passport required!</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Golden Sunset',30000)">
@@ -734,14 +703,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 25 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
         <img src="image25.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Island Cream</h3>
-      <p class="card-desc">Zesty pineapple and chill banana.</p>
+      <p class="card-desc">The ultimate odd couple—pineapple brings the party, banana brings the chill. Together? They're a creamy, zesty duo that'll make your mouth dance. Smooth, groovy, and gone in seconds.</p>
       <div class="card-bottom">
         <span class="kcal-text">200 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Island Cream',30000)">
@@ -749,14 +717,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 26 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
         <img src="image26.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Cassadate Bliss</h3>
-      <p class="card-desc">Fermented cassava and sweet dates.</p>
+      <p class="card-desc">Earthy, sweet, and richly nostalgic. A creamy blend of soft fermented cassava (tape) and natural Medjool dates creates a velvety drink that's both traditional and modern. Slightly tangy, deeply sweet, and energizing.</p>
       <div class="card-bottom">
         <span class="kcal-text">200 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Cassadate Bliss',30000)">
@@ -764,14 +731,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 27 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
         <img src="image27.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Sourkiss</h3>
-      <p class="card-desc">Dragon fruit dreams and soursop sass.</p>
+      <p class="card-desc">A wild ride of dragonfruit dreams and soursop sass! It's tangy, it's funky, it's the smoothie your taste buds didn't know they needed. Warning: may cause sudden happiness.</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Sourkiss',30000)">
@@ -782,18 +748,17 @@ header {
   </div>
 </section>
 
-<!-- ==================== KOPI (image28 - image35) ==================== -->
+<!-- ==================== KOPI ==================== -->
 <section class="section" id="coffee">
   <div class="section-title">Coffee Selection</div>
   <div class="menu-grid">
-    <!-- Menu 28 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$20k</span>
         <img src="image28.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Espresso</h3>
-      <p class="card-desc">Rich, intense pure shot of energy.</p>
+      <p class="card-desc">Rich, intense, and straight to the point. A pure shot of coffee energy.</p>
       <div class="card-bottom">
         <span class="kcal-text">5 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Espresso',20000)">
@@ -801,14 +766,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 29 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image29.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Americano</h3>
-      <p class="card-desc">Smooth bold espresso with hot water.</p>
+      <p class="card-desc">Smooth and bold—espresso softened with hot water for easy sipping.</p>
       <div class="card-bottom">
         <span class="kcal-text">10 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Americano',28000)">
@@ -816,14 +780,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 30 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$29k</span>
         <img src="image30.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Latte</h3>
-      <p class="card-desc">Velvety steamed milk over espresso.</p>
+      <p class="card-desc">Velvety steamed milk poured over espresso. Comfort in a cup.</p>
       <div class="card-bottom">
         <span class="kcal-text">120 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Latte',29000)">
@@ -831,14 +794,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 31 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$29k</span>
         <img src="image31.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Cappuccino</h3>
-      <p class="card-desc">Balance of espresso, milk, and airy foam.</p>
+      <p class="card-desc">A perfect balance of espresso, milk, and airy foam. Classic and comforting.</p>
       <div class="card-bottom">
         <span class="kcal-text">90 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Cappuccino',29000)">
@@ -846,14 +808,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 32 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$35k</span>
         <img src="image32.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Affogato</h3>
-      <p class="card-desc">Vanilla ice cream drowned in hot espresso.</p>
+      <p class="card-desc">Silky vanilla ice cream drowned in hot espresso. Sweet, bold, unforgettable.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Affogato',35000)">
@@ -861,14 +822,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 33 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$29k</span>
         <img src="image33.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Brown Sugar Coffee</h3>
-      <p class="card-desc">Espresso, creamy milk & brown sugar.</p>
+      <p class="card-desc">Espresso meets creamy milk and brown sugar syrup. Smooth, sweet, and satisfying.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Brown Sugar Coffee',29000)">
@@ -876,14 +836,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 34 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$27k</span>
         <img src="image34.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Malaysian Coffee O</h3>
-      <p class="card-desc">Strong black coffee with sugar.</p>
+      <p class="card-desc">Kopi O – Strong black coffee with sugar. Bold and straightforward.</p>
       <div class="card-bottom">
         <span class="kcal-text">60 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Malaysian Coffee O',27000)">
@@ -891,14 +850,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 35 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$27k</span>
         <img src="image35.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Malaysian Coffee C</h3>
-      <p class="card-desc">Creamy with evaporated milk twist.</p>
+      <p class="card-desc">Kopi C – Creamy with evaporated milk. Rich with a nostalgic twist.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Malaysian Coffee C',27000)">
@@ -909,18 +867,17 @@ header {
   </div>
 </section>
 
-<!-- ==================== TEH & LAINNYA (image36 - image43) ==================== -->
+<!-- ==================== TEH & LAINNYA ==================== -->
 <section class="section" id="tea">
   <div class="section-title">Tea & Warm Drinks</div>
   <div class="menu-grid">
-    <!-- Menu 36 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$27k</span>
         <img src="image36.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Sliming Tea Honey</h3>
-      <p class="card-desc">Herbal tea blend sweetened with honey.</p>
+      <p class="card-desc">Herbal tea blend to support metabolism, sweetened with natural honey.</p>
       <div class="card-bottom">
         <span class="kcal-text">30 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Sliming Tea Honey',27000)">
@@ -928,14 +885,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 37 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$24k</span>
         <img src="image37.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Lemon Tea Honey</h3>
-      <p class="card-desc">Black tea, fresh lemon juice & honey.</p>
+      <p class="card-desc">Black tea with fresh lemon juice and honey for a refreshing, immune-boosting drink.</p>
       <div class="card-bottom">
         <span class="kcal-text">40 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Lemon Tea Honey',24000)">
@@ -943,14 +899,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 38 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$29k</span>
         <img src="image38.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Hainan Milk Tea</h3>
-      <p class="card-desc">Creamy Hainan style milk tea.</p>
+      <p class="card-desc">Creamy milk tea inspired by Hainan style, served warm or iced.</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Hainan Milk Tea',29000)">
@@ -958,14 +913,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 39 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image39.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Wedang Jahe</h3>
-      <p class="card-desc">Javanese hot ginger and palm sugar.</p>
+      <p class="card-desc">Traditional Javanese hot drink made from ginger and palm sugar.</p>
       <div class="card-bottom">
         <span class="kcal-text">80 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Wedang Jahe',28000)">
@@ -973,14 +927,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 40 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$23k</span>
         <img src="image40.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Wedang Uwuh</h3>
-      <p class="card-desc">Aromatic blend of ginger & herbs.</p>
+      <p class="card-desc">A warm, aromatic blend of ginger, cinnamon, clove, and other traditional herbs.</p>
       <div class="card-bottom">
         <span class="kcal-text">70 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Wedang Uwuh',23000)">
@@ -988,14 +941,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 41 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$25k</span>
         <img src="image41.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Fresh Coconut</h3>
-      <p class="card-desc">Naturally hydrating straight from coconut.</p>
+      <p class="card-desc">Naturally hydrating drink with electrolytes, served straight from the coconut.</p>
       <div class="card-bottom">
         <span class="kcal-text">45 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Fresh Coconut',25000)">
@@ -1003,14 +955,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 42 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$15k</span>
         <img src="image42.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Infuse Water</h3>
-      <p class="card-desc">Chilled water with fresh fruits/herbs.</p>
+      <p class="card-desc">Chilled water infused with fresh fruits or herbs (e.g., lemon, cucumber, mint).</p>
       <div class="card-bottom">
         <span class="kcal-text">5 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Infuse Water',15000)">
@@ -1018,14 +969,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 43 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$55k</span>
         <img src="image43.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Whey Protein</h3>
-      <p class="card-desc">High-protein shake for muscle recovery.</p>
+      <p class="card-desc">High-protein shake for muscle recovery and nutrition.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Whey Protein',55000)">
@@ -1036,19 +986,18 @@ header {
   </div>
 </section>
 
-<!-- ==================== FRUIT JUICE (image44 - image51) ==================== -->
+<!-- ==================== FRUIT JUICE ==================== -->
 <section class="section" id="fruit">
   <div class="section-title">Fruit Juice</div>
   <div class="addon-note">All variants Rp 28.000</div>
   <div class="menu-grid">
-    <!-- Menu 44 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image44.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Dragon Fruit</h3>
-      <p class="card-desc">Vibrant sweet red dragon fruit.</p>
+      <p class="card-desc">A vibrant, naturally sweet juice made from fresh red dragon fruit. Rich in antioxidants and fiber, it's a refreshing and healthy drink.</p>
       <div class="card-bottom">
         <span class="kcal-text">60 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Dragon Fruit',28000)">
@@ -1056,14 +1005,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 45 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image45.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Banana</h3>
-      <p class="card-desc">Smooth ripe banana energy boost.</p>
+      <p class="card-desc">A smooth, naturally sweet drink made from ripe bananas. High in potassium and energy, great for a quick and healthy recharge.</p>
       <div class="card-bottom">
         <span class="kcal-text">120 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Banana',28000)">
@@ -1071,14 +1019,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 46 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image46.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Mango</h3>
-      <p class="card-desc">Sweet tropical rich vitamin C.</p>
+      <p class="card-desc">A sweet, tropical juice made from ripe mangoes. Smooth and rich in vitamin C, perfect for a refreshing boost.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Mango',28000)">
@@ -1086,14 +1033,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 47 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image47.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Pineapple</h3>
-      <p class="card-desc">Bright tangy fresh hydration.</p>
+      <p class="card-desc">A bright, tangy juice made from fresh pineapple. Refreshing and rich in vitamin C, perfect for hydration and digestion.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Pineapple',28000)">
@@ -1101,14 +1047,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 48 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image48.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Soursoup</h3>
-      <p class="card-desc">Creamy tangy-sweet soursop.</p>
+      <p class="card-desc">A tangy-sweet tropical juice made from fresh soursop. Creamy, refreshing, and packed with vitamin C and antioxidants.</p>
       <div class="card-bottom">
         <span class="kcal-text">110 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Soursoup',28000)">
@@ -1116,14 +1061,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 49 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image49.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Guava</h3>
-      <p class="card-desc">Fragrant sweet-tart boosting immunity.</p>
+      <p class="card-desc">A fragrant, sweet-tart juice made from ripe guavas. High in vitamin C and fiber, great for boosting immunity.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Guava',28000)">
@@ -1131,14 +1075,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 50 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image50.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Avocado</h3>
-      <p class="card-desc">Rich creamy healthy fats.</p>
+      <p class="card-desc">A rich, creamy drink made from ripe avocados. Full of healthy fats, fiber, and nutrients — perfect for a satisfying energy boost.</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Avocado',28000)">
@@ -1146,14 +1089,13 @@ header {
         </button>
       </div>
     </div>
-    <!-- Menu 51 -->
     <div class="card">
       <div class="img-box">
         <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
         <img src="image51.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Strawberry</h3>
-      <p class="card-desc">Fresh sweet-tart antioxidant treat.</p>
+      <p class="card-desc">A fresh, sweet-tart juice made from ripe strawberries. Packed with antioxidants and vitamin C, perfect for a refreshing treat.</p>
       <div class="card-bottom">
         <span class="kcal-text">90 kcal</span>
         <button class="add-btn" onclick="addToCart(this,'Strawberry',28000)">
