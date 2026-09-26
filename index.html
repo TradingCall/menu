@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Balance Bar - Order Menu</title>
 <style>
 :root {
@@ -20,16 +20,25 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
-  padding-bottom: 95px;
+  padding-bottom: calc(95px + env(safe-area-inset-bottom, 0px));
   line-height: 1.45;
+}
+
+/* Header + Tabs digabung jadi SATU wrapper sticky, supaya tidak
+   pernah saling menimpa / memotong konten di layar HP manapun.
+   (Sebelumnya tab pakai top:78px hardcode yang bisa salah kalau
+   tinggi header berubah karena teks tagline turun baris, dsb.) */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+  background: var(--primary-dark);
 }
 header {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
   padding: 18px 20px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 50;
   box-shadow: 0 2px 14px rgba(0,0,0,0.15);
 }
 .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.5px; }
@@ -42,9 +51,6 @@ header {
   overflow-x: auto;
   padding: 12px 16px;
   background: white;
-  position: sticky;
-  top: 78px;
-  z-index: 40;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   -webkit-overflow-scrolling: touch;
 }
@@ -74,6 +80,22 @@ header {
   margin-bottom: 14px;
   color: var(--primary-dark);
 }
+.sub-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin: 22px 0 10px;
+  color: var(--primary-dark);
+}
+.addon-note {
+  font-size: 0.75rem;
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px dashed #f59e0b;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
 
 .card {
   background: var(--card);
@@ -93,8 +115,11 @@ header {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Foto pakai aspect-ratio (bukan tinggi tetap) supaya foto custom
+   kamu nanti tampil proporsional & tidak gampang kepotong aneh
+   di berbagai ukuran layar/rasio foto. */
 .card-img {
-  height: 155px;
+  aspect-ratio: 4 / 3;
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -104,7 +129,9 @@ header {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.45s ease;
+  display: block;
 }
 .card:hover .card-img img { transform: scale(1.07); }
 .kcal {
@@ -121,21 +148,21 @@ header {
 }
 .card-body { padding: 13px 15px 15px; }
 .card-name { font-size: 1.02rem; font-weight: 700; margin-bottom: 4px; }
+/* Deskripsi TIDAK dibatasi jumlah baris lagi -> tidak ada lagi
+   teks yang terpotong di tengah kalimat. */
 .card-desc {
   font-size: 0.78rem;
   color: var(--muted);
   margin-bottom: 12px;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 .card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-.price { font-size: 1.12rem; font-weight: 800; color: var(--price); }
+.price { font-size: 1.05rem; font-weight: 800; color: var(--price); }
 .btn-add {
   background: var(--primary);
   color: white;
@@ -146,6 +173,7 @@ header {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 .btn-add:active { transform: scale(0.93); }
 .btn-add.added {
@@ -162,7 +190,7 @@ header {
   bottom: 0; left: 0; right: 0;
   background: white;
   box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
-  padding: 12px 16px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -215,6 +243,7 @@ header {
   max-height: 85vh;
   border-radius: 24px 24px 0 0;
   padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   overflow-y: auto;
   animation: slideUp 0.35s ease;
 }
@@ -243,6 +272,7 @@ header {
   align-items: center;
   padding: 12px 0;
   border-bottom: 1px solid #f1f5f9;
+  gap: 10px;
 }
 .cart-item-name { font-weight: 600; font-size: 0.95rem; }
 .cart-item-price { color: var(--price); font-weight: 700; }
@@ -287,6 +317,8 @@ header {
   display: none;
   flex-direction: column;
   padding: 24px 20px;
+  padding-top: calc(24px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   overflow-y: auto;
 }
 .order-success.show { display: flex; }
@@ -346,19 +378,104 @@ header {
 </head>
 <body>
 
-<header>
-  <div class="logo">BALANCE BAR <span>Healthy Café</span></div>
-  <div class="tagline">Scan • Pilih • Pesan • Tunjukkan ke Kasir</div>
-</header>
+<!--
+================================================================
+ PANDUAN FOTO MENU (BACA INI SEBELUM UPLOAD KE GITHUB)
+================================================================
+ Setiap foto menu di bawah sudah diberi NOMOR & nama file di
+ dalam komentar HTML tepat di atas tag <img> masing-masing.
 
-<div class="tabs">
-  <button class="tab active" data-section="chicken">Ayam</button>
-  <button class="tab" data-section="rice">Nasi & Mie</button>
-  <button class="tab" data-section="juice">Juice & Detox</button>
-  <button class="tab" data-section="smoothie">Smoothie</button>
-  <button class="tab" data-section="coffee">Kopi</button>
-  <button class="tab" data-section="tea">Teh & Lainnya</button>
-  <button class="tab" data-section="fruit">Fruit Juice</button>
+ Cara pakai:
+ 1. Siapkan foto untuk tiap item (disarankan rasio 4:3, mis. 800x600px).
+ 2. Beri nama file PERSIS seperti daftar di bawah. Ekstensi HARUS .png.
+ 3. Upload semua file foto ke folder yang SAMA dengan file index.html
+    ini di repo GitHub kamu (tidak perlu bikin folder lain).
+ 4. Foto akan otomatis muncul di menu yang sesuai, tidak perlu edit
+    kode lagi. Selama foto belum ada / nama salah, kartu menu akan
+    menampilkan ikon placeholder 🍽️ (bukan ikon "gambar rusak").
+
+ AYAM
+  image1.png  -> Chili Lime Marinated Chicken Breast
+  image2.png  -> Italian Herb Marinated Chicken Breast
+  image3.png  -> Lemon Garlic Marinated Chicken Breast
+  image4.png  -> Taichan Marinated Chicken Breast
+
+ NASI & MIE
+  image5.png  -> Nasi Ayam Kampung Kalasan
+  image6.png  -> Nasi Ayam Goreng Kampung Berempah
+  image7.png  -> Indomie Rebus Telur
+  image8.png  -> Indomie Goreng Telur
+
+ JUICE & DETOX
+  image9.png  -> Green Zest
+  image10.png -> Reduce Bloating
+  image11.png -> Rebit Balance
+  image12.png -> Nectar Balance
+  image13.png -> 100% Pure Apple
+  image14.png -> 100% Pure Orange
+  image15.png -> 100% Pure Pear
+  image16.png -> 100% Pure Grape
+  image17.png -> 100% Pure Pineapple
+
+ SMOOTHIE BOWL & SPECIAL
+  image18.png -> Magenta Bliss
+  image19.png -> Mango Mistique
+  image20.png -> Choco Monkey
+  image21.png -> Pinky Dream
+  image22.png -> Pinacolada
+  image23.png -> Banana Glow
+  image24.png -> Golden Sunset
+  image25.png -> Island Cream
+  image26.png -> Cassadate Bliss
+  image27.png -> Sourkiss
+
+ COFFEE
+  image28.png -> Espresso
+  image29.png -> Americano
+  image30.png -> Latte
+  image31.png -> Cappuccino
+  image32.png -> Affogato
+  image33.png -> Brown Sugar Coffee
+  image34.png -> Malaysian Coffee O
+  image35.png -> Malaysian Coffee C
+
+ TEH & MINUMAN HANGAT
+  image36.png -> Sliming Tea Honey
+  image37.png -> Lemon Tea Honey
+  image38.png -> Hainan Milk Tea
+  image39.png -> Wedang Jahe
+  image40.png -> Wedang Uwuh
+  image41.png -> Fresh Coconut
+  image42.png -> Infuse Water
+  image43.png -> Whey Protein
+
+ FRUIT JUICE
+  image44.png -> Dragon Fruit
+  image45.png -> Banana
+  image46.png -> Mango
+  image47.png -> Pineapple
+  image48.png -> Soursoup
+  image49.png -> Guava
+  image50.png -> Avocado
+  image51.png -> Strawberry
+================================================================
+-->
+
+<div class="topbar">
+  <header>
+    <div class="logo">BALANCE BAR <span>Healthy Café</span></div>
+    <div class="tagline">Scan • Pilih • Pesan • Tunjukkan ke Kasir</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-section="chicken">Ayam</button>
+    <button class="tab" data-section="rice">Nasi & Mie</button>
+    <button class="tab" data-section="juice">Juice & Detox</button>
+    <button class="tab" data-section="smoothie">Smoothie</button>
+    <button class="tab" data-section="coffee">Kopi</button>
+    <button class="tab" data-section="tea">Teh & Lainnya</button>
+    <button class="tab" data-section="fruit">Fruit Juice</button>
+  </div>
 </div>
 
 <!-- ==================== AYAM ==================== -->
@@ -366,8 +483,9 @@ header {
   <div class="section-title">🍗 Ayam Marinated</div>
 
   <div class="card">
+    <!-- 📸 Menu #1: Chili Lime Marinated Chicken Breast -> image1.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80" alt="Chili Lime Chicken">
+      <img src="image1.png" alt="Chili Lime Marinated Chicken Breast" onerror="handleImgError(this)">
       <span class="kcal">150 kcal</span>
     </div>
     <div class="card-body">
@@ -381,8 +499,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #2: Italian Herb Marinated Chicken Breast -> image2.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1598515214211-89d3c73fe783?w=800&q=80" alt="Italian Herb Chicken">
+      <img src="image2.png" alt="Italian Herb Marinated Chicken Breast" onerror="handleImgError(this)">
       <span class="kcal">165 kcal</span>
     </div>
     <div class="card-body">
@@ -396,13 +515,14 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #3: Lemon Garlic Marinated Chicken Breast -> image3.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1604908177522-402c0c2a0f0a?w=800&q=80" alt="Lemon Garlic Chicken">
+      <img src="image3.png" alt="Lemon Garlic Marinated Chicken Breast" onerror="handleImgError(this)">
       <span class="kcal">140 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">Lemon Garlic Marinated Chicken Breast</div>
-      <div class="card-desc">A refreshing blend of bright lemon and fragrant garlic, wrapping tender chicken in a timeless, flavorful hug that’s light yet unforgettable.</div>
+      <div class="card-desc">A refreshing blend of bright lemon and fragrant garlic, wrapping tender chicken in a timeless, flavorful hug that's light yet unforgettable.</div>
       <div class="card-footer">
         <div class="price">Rp 38.000</div>
         <button class="btn-add" onclick="addToCart(this,'Lemon Garlic Marinated Chicken Breast',38000)">+ Tambah</button>
@@ -411,8 +531,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #4: Taichan Marinated Chicken Breast -> image4.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1604908177520-040220b44943?w=800&q=80" alt="Taichan Chicken">
+      <img src="image4.png" alt="Taichan Marinated Chicken Breast" onerror="handleImgError(this)">
       <span class="kcal">165 kcal</span>
     </div>
     <div class="card-body">
@@ -431,8 +552,9 @@ header {
   <div class="section-title">🍚 Nasi & Mie</div>
 
   <div class="card">
+    <!-- 📸 Menu #5: Nasi Ayam Kampung Kalasan -> image5.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800&q=80" alt="Nasi Ayam Kalasan">
+      <img src="image5.png" alt="Nasi Ayam Kampung Kalasan" onerror="handleImgError(this)">
       <span class="kcal">600 kcal</span>
     </div>
     <div class="card-body">
@@ -446,8 +568,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #6: Nasi Ayam Goreng Kampung Berempah -> image6.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&q=80" alt="Nasi Ayam Goreng">
+      <img src="image6.png" alt="Nasi Ayam Goreng Kampung Berempah" onerror="handleImgError(this)">
       <span class="kcal">600 kcal</span>
     </div>
     <div class="card-body">
@@ -461,13 +584,14 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #7: Indomie Rebus Telur -> image7.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80" alt="Indomie Rebus">
+      <img src="image7.png" alt="Indomie Rebus Telur" onerror="handleImgError(this)">
       <span class="kcal">450 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">Indomie Rebus Telur</div>
-      <div class="card-desc">A simple yet satisfying comfort dish made with Indomie instant noodles, served hot in a flavorful broth and topped with a soft-boiled or poached egg. The noodles are seasoned with Indomie’s signature spice blend, creating a savory, slightly spicy, and umami-rich taste.</div>
+      <div class="card-desc">A simple yet satisfying comfort dish made with Indomie instant noodles, served hot in a flavorful broth and topped with a soft-boiled or poached egg. The noodles are seasoned with Indomie's signature spice blend, creating a savory, slightly spicy, and umami-rich taste.</div>
       <div class="card-footer">
         <div class="price">Rp 23.000</div>
         <button class="btn-add" onclick="addToCart(this,'Indomie Rebus Telur',23000)">+ Tambah</button>
@@ -476,8 +600,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #8: Indomie Goreng Telur -> image8.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1612929632978-da6d8ed42f79?w=800&q=80" alt="Indomie Goreng">
+      <img src="image8.png" alt="Indomie Goreng Telur" onerror="handleImgError(this)">
       <span class="kcal">450 kcal</span>
     </div>
     <div class="card-body">
@@ -496,8 +621,9 @@ header {
   <div class="section-title">🧃 Juice & Detox</div>
 
   <div class="card">
+    <!-- 📸 Menu #9: Green Zest -> image9.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=800&q=80" alt="Green Zest">
+      <img src="image9.png" alt="Green Zest" onerror="handleImgError(this)">
       <span class="kcal">70 kcal</span>
     </div>
     <div class="card-body">
@@ -511,8 +637,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #10: Reduce Bloating -> image10.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b7?w=800&q=80" alt="Reduce Bloating">
+      <img src="image10.png" alt="Reduce Bloating" onerror="handleImgError(this)">
       <span class="kcal">50 kcal</span>
     </div>
     <div class="card-body">
@@ -526,8 +653,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #11: Rebit Balance -> image11.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=800&q=80" alt="Rebit Balance">
+      <img src="image11.png" alt="Rebit Balance" onerror="handleImgError(this)">
       <span class="kcal">100 kcal</span>
     </div>
     <div class="card-body">
@@ -541,8 +669,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #12: Nectar Balance -> image12.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b7?w=800&q=80" alt="Nectar Balance">
+      <img src="image12.png" alt="Nectar Balance" onerror="handleImgError(this)">
       <span class="kcal">90 kcal</span>
     </div>
     <div class="card-body">
@@ -555,14 +684,18 @@ header {
     </div>
   </div>
 
+  <div class="sub-title">🍏 100% Pure Juice</div>
+  <div class="addon-note">+ Tambah Whey Protein: Rp 35.000 (tambahan 90 kcal / 45 gr protein)</div>
+
   <div class="card">
+    <!-- 📸 Menu #13: 100% Pure Apple -> image13.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b7?w=800&q=80" alt="Pure Apple">
+      <img src="image13.png" alt="100% Pure Apple" onerror="handleImgError(this)">
       <span class="kcal">110 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">100% Pure Apple</div>
-      <div class="card-desc">Just apples. Nothing else. Cold-pressed, crisp, and naturally sweet — it’s pure green (or red) apple goodness in a glass. No sugar, no additives, no drama.</div>
+      <div class="card-desc">Just apples. Nothing else. Cold-pressed, crisp, and naturally sweet — it's pure green (or red) apple goodness in a glass. No sugar, no additives, no drama.</div>
       <div class="card-footer">
         <div class="price">Rp 38.000</div>
         <button class="btn-add" onclick="addToCart(this,'100% Pure Apple',38000)">+ Tambah</button>
@@ -571,8 +704,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #14: 100% Pure Orange -> image14.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=800&q=80" alt="Pure Orange">
+      <img src="image14.png" alt="100% Pure Orange" onerror="handleImgError(this)">
       <span class="kcal">110 kcal</span>
     </div>
     <div class="card-body">
@@ -586,8 +720,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #15: 100% Pure Pear -> image15.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=800&q=80" alt="Pure Pear">
+      <img src="image15.png" alt="100% Pure Pear" onerror="handleImgError(this)">
       <span class="kcal">100 kcal</span>
     </div>
     <div class="card-body">
@@ -601,8 +736,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #16: 100% Pure Grape -> image16.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=800&q=80" alt="Pure Grape">
+      <img src="image16.png" alt="100% Pure Grape" onerror="handleImgError(this)">
       <span class="kcal">150 kcal</span>
     </div>
     <div class="card-body">
@@ -616,8 +752,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #17: 100% Pure Pineapple -> image17.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=800&q=80" alt="Pure Pineapple">
+      <img src="image17.png" alt="100% Pure Pineapple" onerror="handleImgError(this)">
       <span class="kcal">130 kcal</span>
     </div>
     <div class="card-body">
@@ -634,15 +771,17 @@ header {
 <!-- ==================== SMOOTHIE ==================== -->
 <section class="section" id="smoothie">
   <div class="section-title">🍹 Smoothie Bowl & Special</div>
+  <div class="addon-note">+ Tambah Whey Protein: Rp 35.000 (tambahan 90 kcal / 45 gr protein)</div>
 
   <div class="card">
+    <!-- 📸 Menu #18: Magenta Bliss -> image18.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800&q=80" alt="Magenta Bliss">
+      <img src="image18.png" alt="Magenta Bliss" onerror="handleImgError(this)">
       <span class="kcal">160 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">Magenta Bliss</div>
-      <div class="card-desc">Smooth. Dreamy. Irresistibly vibrant. Creamy dragon fruit blended into a velvety purple potion. Lightly sweet, beautifully bold — it’s wellness with a wink of indulgence.</div>
+      <div class="card-desc">Smooth. Dreamy. Irresistibly vibrant. Creamy dragon fruit blended into a velvety purple potion. Lightly sweet, beautifully bold — it's wellness with a wink of indulgence.</div>
       <div class="card-footer">
         <div class="price">Rp 45.000</div>
         <button class="btn-add" onclick="addToCart(this,'Magenta Bliss',45000)">+ Tambah</button>
@@ -651,8 +790,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #19: Mango Mistique -> image19.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800&q=80" alt="Mango Mistique">
+      <img src="image19.png" alt="Mango Mistique" onerror="handleImgError(this)">
       <span class="kcal">120 kcal</span>
     </div>
     <div class="card-body">
@@ -666,13 +806,14 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #20: Choco Monkey -> image20.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1577805947697-89e18249d765?w=800&q=80" alt="Choco Monkey">
+      <img src="image20.png" alt="Choco Monkey" onerror="handleImgError(this)">
       <span class="kcal">250 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">Choco Monkey</div>
-      <div class="card-desc">Sinfully smooth and playfully rich. Ripe banana and dark chocolate collide in this decadent shake — thick, creamy, and oh-so-satisfying. It’s dessert in a glass.</div>
+      <div class="card-desc">Sinfully smooth and playfully rich. Ripe banana and dark chocolate collide in this decadent shake — thick, creamy, and oh-so-satisfying. It's dessert in a glass.</div>
       <div class="card-footer">
         <div class="price">Rp 45.000</div>
         <button class="btn-add" onclick="addToCart(this,'Choco Monkey',45000)">+ Tambah</button>
@@ -681,8 +822,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #21: Pinky Dream -> image21.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1638176066666-ffb2f013c7dd?w=800&q=80" alt="Pinky Dream">
+      <img src="image21.png" alt="Pinky Dream" onerror="handleImgError(this)">
       <span class="kcal">180 kcal</span>
     </div>
     <div class="card-body">
@@ -696,8 +838,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #22: Pinacolada -> image22.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800&q=80" alt="Pinacolada">
+      <img src="image22.png" alt="Pinacolada" onerror="handleImgError(this)">
       <span class="kcal">200 kcal</span>
     </div>
     <div class="card-body">
@@ -711,13 +854,14 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #23: Banana Glow -> image23.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1577805947697-89e18249d765?w=800&q=80" alt="Banana Glow">
+      <img src="image23.png" alt="Banana Glow" onerror="handleImgError(this)">
       <span class="kcal">200 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">Banana Glow (Mango + Banana)</div>
-      <div class="card-desc">When mango meets banana, it’s pure smoothie magic. Think tropical sunset in a cup, with vibes smoother than your best pickup line. Creamy, dreamy, and dangerously sippable.</div>
+      <div class="card-desc">When mango meets banana, it's pure smoothie magic. Think tropical sunset in a cup, with vibes smoother than your best pickup line. Creamy, dreamy, and dangerously sippable.</div>
       <div class="card-footer">
         <div class="price">Rp 30.000</div>
         <button class="btn-add" onclick="addToCart(this,'Banana Glow',30000)">+ Tambah</button>
@@ -726,8 +870,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #24: Golden Sunset -> image24.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1638176066666-ffb2f013c7dd?w=800&q=80" alt="Golden Sunset">
+      <img src="image24.png" alt="Golden Sunset" onerror="handleImgError(this)">
       <span class="kcal">160 kcal</span>
     </div>
     <div class="card-body">
@@ -741,13 +886,14 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #25: Island Cream -> image25.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800&q=80" alt="Island Cream">
+      <img src="image25.png" alt="Island Cream" onerror="handleImgError(this)">
       <span class="kcal">200 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">Island Cream (Pineapple + Banana)</div>
-      <div class="card-desc">The ultimate odd couple—pineapple brings the party, banana brings the chill. Together? They’re a creamy, zesty duo that’ll make your mouth dance. Smooth, groovy, and gone in seconds.</div>
+      <div class="card-desc">The ultimate odd couple—pineapple brings the party, banana brings the chill. Together? They're a creamy, zesty duo that'll make your mouth dance. Smooth, groovy, and gone in seconds.</div>
       <div class="card-footer">
         <div class="price">Rp 30.000</div>
         <button class="btn-add" onclick="addToCart(this,'Island Cream',30000)">+ Tambah</button>
@@ -756,13 +902,14 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #26: Cassadate Bliss -> image26.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800&q=80" alt="Cassadate Bliss">
+      <img src="image26.png" alt="Cassadate Bliss" onerror="handleImgError(this)">
       <span class="kcal">200 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">Cassadate Bliss (Fermented Cassava + Dates)</div>
-      <div class="card-desc">Earthy, sweet, and richly nostalgic. A creamy blend of soft fermented cassava (tape) and natural Medjool dates creates a velvety drink that’s both traditional and modern. Slightly tangy, deeply sweet, and energizing.</div>
+      <div class="card-desc">Earthy, sweet, and richly nostalgic. A creamy blend of soft fermented cassava (tape) and natural Medjool dates creates a velvety drink that's both traditional and modern. Slightly tangy, deeply sweet, and energizing.</div>
       <div class="card-footer">
         <div class="price">Rp 30.000</div>
         <button class="btn-add" onclick="addToCart(this,'Cassadate Bliss',30000)">+ Tambah</button>
@@ -771,13 +918,14 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #27: Sourkiss -> image27.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800&q=80" alt="Sourkiss">
+      <img src="image27.png" alt="Sourkiss" onerror="handleImgError(this)">
       <span class="kcal">160 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">Sourkiss (Dragon Fruit + Soursoup)</div>
-      <div class="card-desc">A wild ride of dragonfruit dreams and soursop sass! It’s tangy, it’s funky, it’s the smoothie your taste buds didn’t know they needed. Warning: may cause sudden happiness.</div>
+      <div class="card-desc">A wild ride of dragonfruit dreams and soursop sass! It's tangy, it's funky, it's the smoothie your taste buds didn't know they needed. Warning: may cause sudden happiness.</div>
       <div class="card-footer">
         <div class="price">Rp 30.000</div>
         <button class="btn-add" onclick="addToCart(this,'Sourkiss',30000)">+ Tambah</button>
@@ -789,10 +937,12 @@ header {
 <!-- ==================== KOPI ==================== -->
 <section class="section" id="coffee">
   <div class="section-title">☕ Coffee</div>
+  <div class="addon-note">+ Tambah Whey Protein: Rp 35.000</div>
 
   <div class="card">
+    <!-- 📸 Menu #28: Espresso -> image28.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80" alt="Espresso">
+      <img src="image28.png" alt="Espresso" onerror="handleImgError(this)">
       <span class="kcal">5 kcal</span>
     </div>
     <div class="card-body">
@@ -806,8 +956,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #29: Americano -> image29.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80" alt="Americano">
+      <img src="image29.png" alt="Americano" onerror="handleImgError(this)">
       <span class="kcal">10 kcal</span>
     </div>
     <div class="card-body">
@@ -821,8 +972,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #30: Latte -> image30.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=800&q=80" alt="Latte">
+      <img src="image30.png" alt="Latte" onerror="handleImgError(this)">
       <span class="kcal">120 kcal</span>
     </div>
     <div class="card-body">
@@ -836,8 +988,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #31: Cappuccino -> image31.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1534778101976-628477829b39?w=800&q=80" alt="Cappuccino">
+      <img src="image31.png" alt="Cappuccino" onerror="handleImgError(this)">
       <span class="kcal">90 kcal</span>
     </div>
     <div class="card-body">
@@ -851,8 +1004,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #32: Affogato -> image32.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=800&q=80" alt="Affogato">
+      <img src="image32.png" alt="Affogato" onerror="handleImgError(this)">
       <span class="kcal">180 kcal</span>
     </div>
     <div class="card-body">
@@ -866,8 +1020,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #33: Brown Sugar Coffee -> image33.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80" alt="Brown Sugar Coffee">
+      <img src="image33.png" alt="Brown Sugar Coffee" onerror="handleImgError(this)">
       <span class="kcal">180 kcal</span>
     </div>
     <div class="card-body">
@@ -881,8 +1036,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #34: Malaysian Coffee O -> image34.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80" alt="Malaysian Coffee O">
+      <img src="image34.png" alt="Malaysian Coffee O" onerror="handleImgError(this)">
       <span class="kcal">60 kcal</span>
     </div>
     <div class="card-body">
@@ -896,8 +1052,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #35: Malaysian Coffee C -> image35.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=800&q=80" alt="Malaysian Coffee C">
+      <img src="image35.png" alt="Malaysian Coffee C" onerror="handleImgError(this)">
       <span class="kcal">180 kcal</span>
     </div>
     <div class="card-body">
@@ -916,8 +1073,9 @@ header {
   <div class="section-title">🍵 Teh & Minuman Hangat</div>
 
   <div class="card">
+    <!-- 📸 Menu #36: Sliming Tea Honey -> image36.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80" alt="Sliming Tea">
+      <img src="image36.png" alt="Sliming Tea Honey" onerror="handleImgError(this)">
       <span class="kcal">30 kcal</span>
     </div>
     <div class="card-body">
@@ -931,8 +1089,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #37: Lemon Tea Honey -> image37.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80" alt="Lemon Tea">
+      <img src="image37.png" alt="Lemon Tea Honey" onerror="handleImgError(this)">
       <span class="kcal">40 kcal</span>
     </div>
     <div class="card-body">
@@ -946,8 +1105,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #38: Hainan Milk Tea -> image38.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=800&q=80" alt="Hainan Milk Tea">
+      <img src="image38.png" alt="Hainan Milk Tea" onerror="handleImgError(this)">
       <span class="kcal">160 kcal</span>
     </div>
     <div class="card-body">
@@ -961,8 +1121,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #39: Wedang Jahe -> image39.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80" alt="Wedang Jahe">
+      <img src="image39.png" alt="Wedang Jahe" onerror="handleImgError(this)">
       <span class="kcal">80 kcal</span>
     </div>
     <div class="card-body">
@@ -976,8 +1137,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #40: Wedang Uwuh -> image40.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80" alt="Wedang Uwuh">
+      <img src="image40.png" alt="Wedang Uwuh" onerror="handleImgError(this)">
       <span class="kcal">70 kcal</span>
     </div>
     <div class="card-body">
@@ -991,8 +1153,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #41: Fresh Coconut -> image41.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80" alt="Fresh Coconut">
+      <img src="image41.png" alt="Fresh Coconut" onerror="handleImgError(this)">
       <span class="kcal">45 kcal</span>
     </div>
     <div class="card-body">
@@ -1006,8 +1169,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #42: Infuse Water -> image42.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80" alt="Infuse Water">
+      <img src="image42.png" alt="Infuse Water" onerror="handleImgError(this)">
       <span class="kcal">5 kcal</span>
     </div>
     <div class="card-body">
@@ -1021,8 +1185,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #43: Whey Protein -> image43.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1577805947697-89e18249d765?w=800&q=80" alt="Whey Protein">
+      <img src="image43.png" alt="Whey Protein" onerror="handleImgError(this)">
       <span class="kcal">180 kcal</span>
     </div>
     <div class="card-body">
@@ -1039,15 +1204,17 @@ header {
 <!-- ==================== FRUIT JUICE ==================== -->
 <section class="section" id="fruit">
   <div class="section-title">🍓 Fruit Juice (Rp 28.000)</div>
+  <div class="addon-note">+ Tambah Whey Protein: Rp 35.000 (tambahan 90 kcal / 45 gr protein)</div>
 
   <div class="card">
+    <!-- 📸 Menu #44: Dragon Fruit -> image44.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800&q=80" alt="Dragon Fruit">
+      <img src="image44.png" alt="Dragon Fruit" onerror="handleImgError(this)">
       <span class="kcal">60 kcal</span>
     </div>
     <div class="card-body">
       <div class="card-name">Dragon Fruit</div>
-      <div class="card-desc">A vibrant, naturally sweet juice made from fresh red dragon fruit. Rich in antioxidants and fiber, it’s a refreshing and healthy drink.</div>
+      <div class="card-desc">A vibrant, naturally sweet juice made from fresh red dragon fruit. Rich in antioxidants and fiber, it's a refreshing and healthy drink.</div>
       <div class="card-footer">
         <div class="price">Rp 28.000</div>
         <button class="btn-add" onclick="addToCart(this,'Dragon Fruit',28000)">+ Tambah</button>
@@ -1056,8 +1223,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #45: Banana -> image45.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1577805947697-89e18249d765?w=800&q=80" alt="Banana">
+      <img src="image45.png" alt="Banana" onerror="handleImgError(this)">
       <span class="kcal">120 kcal</span>
     </div>
     <div class="card-body">
@@ -1071,8 +1239,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #46: Mango -> image46.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800&q=80" alt="Mango">
+      <img src="image46.png" alt="Mango" onerror="handleImgError(this)">
       <span class="kcal">100 kcal</span>
     </div>
     <div class="card-body">
@@ -1086,8 +1255,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #47: Pineapple -> image47.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=800&q=80" alt="Pineapple">
+      <img src="image47.png" alt="Pineapple" onerror="handleImgError(this)">
       <span class="kcal">100 kcal</span>
     </div>
     <div class="card-body">
@@ -1101,8 +1271,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #48: Soursoup -> image48.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=800&q=80" alt="Soursoup">
+      <img src="image48.png" alt="Soursoup" onerror="handleImgError(this)">
       <span class="kcal">110 kcal</span>
     </div>
     <div class="card-body">
@@ -1116,8 +1287,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #49: Guava -> image49.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1638176066666-ffb2f013c7dd?w=800&q=80" alt="Guava">
+      <img src="image49.png" alt="Guava" onerror="handleImgError(this)">
       <span class="kcal">100 kcal</span>
     </div>
     <div class="card-body">
@@ -1131,8 +1303,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #50: Avocado -> image50.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800&q=80" alt="Avocado">
+      <img src="image50.png" alt="Avocado" onerror="handleImgError(this)">
       <span class="kcal">160 kcal</span>
     </div>
     <div class="card-body">
@@ -1146,8 +1319,9 @@ header {
   </div>
 
   <div class="card">
+    <!-- 📸 Menu #51: Strawberry -> image51.png -->
     <div class="card-img">
-      <img src="https://images.unsplash.com/photo-1638176066666-ffb2f013c7dd?w=800&q=80" alt="Strawberry">
+      <img src="image51.png" alt="Strawberry" onerror="handleImgError(this)">
       <span class="kcal">90 kcal</span>
     </div>
     <div class="card-body">
@@ -1212,6 +1386,18 @@ header {
 let cart = {};
 let orderCounter = 1000;
 
+// Placeholder otomatis kalau foto belum diupload / nama file salah,
+// supaya tidak muncul ikon "gambar rusak" di HP pelanggan.
+function handleImgError(img) {
+  img.onerror = null;
+  img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">' +
+    '<rect width="100%" height="100%" fill="#e8f5ef"/>' +
+    '<text x="50%" y="50%" font-size="60" text-anchor="middle" dominant-baseline="middle">🍽️</text>' +
+    '</svg>'
+  );
+}
+
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1248,7 +1434,7 @@ function updateCartUI() {
   }
   document.getElementById('cartCount').textContent = count;
   document.getElementById('cartTotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
-  
+
   const bar = document.getElementById('cartBar');
   if (count > 0) bar.classList.add('show');
   else bar.classList.remove('show');
@@ -1267,17 +1453,17 @@ function renderCartItems() {
   const container = document.getElementById('cartItems');
   const empty = document.getElementById('cartEmpty');
   const checkoutBtn = document.getElementById('checkoutBtn');
-  
+
   if (Object.keys(cart).length === 0) {
     container.innerHTML = '';
     empty.style.display = 'block';
     checkoutBtn.style.display = 'none';
     return;
   }
-  
+
   empty.style.display = 'none';
   checkoutBtn.style.display = 'block';
-  
+
   let html = '';
   let total = 0;
   for (let name in cart) {
