@@ -15,6 +15,7 @@
   --text-muted: #8e8e93;
   --accent: #e0e0e0;
   --price-color: #ffffff;
+  --green: #4ade80;
   --shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
@@ -26,6 +27,7 @@ body {
   padding-bottom: calc(95px + env(safe-area-inset-bottom, 0px));
   line-height: 1.4;
   -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
 }
 
 /* --- HEADER & NAVIGATION --- */
@@ -49,12 +51,13 @@ header {
 
 .tabs {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   overflow-x: auto;
   padding: 12px 20px 16px;
   background: var(--bg-nav);
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  scroll-snap-type: x mandatory;
 }
 .tabs::-webkit-scrollbar { display: none; }
 
@@ -68,58 +71,82 @@ header {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  scroll-snap-align: center;
+  min-width: 64px;
 }
 .tab .icon-box {
-  width: 46px;
-  height: 46px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
-  transition: all 0.3s;
+  font-size: 1.4rem;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: #1a1a1a;
 }
 .tab .tab-text {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 500;
+  transition: color 0.3s;
 }
 .tab.active { color: var(--text-main); }
 .tab.active .icon-box {
-  border-color: #333;
-  background: #1a1a1a;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  border-color: #fff;
+  background: #222;
+  transform: scale(1.12) translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255,255,255,0.15);
 }
+.tab:active .icon-box { transform: scale(0.95); }
 
 /* --- MAIN SECTIONS & GRID --- */
-.section { display: none; padding: 20px 16px; }
-.section.active { display: block; animation: fadeIn 0.4s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.sections-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.section { 
+  display: none; 
+  padding: 20px 16px; 
+  will-change: transform, opacity;
+}
+.section.active { 
+  display: block; 
+  animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+@keyframes slideIn { 
+  from { opacity: 0; transform: translateX(40px); } 
+  to { opacity: 1; transform: translateX(0); } 
+}
+@keyframes slideInLeft { 
+  from { opacity: 0; transform: translateX(-40px); } 
+  to { opacity: 1; transform: translateX(0); } 
+}
+.section.slide-left { animation: slideInLeft 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 
 .section-title {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   text-align: center;
   letter-spacing: 0.5px;
 }
 .addon-note {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   color: #a8a29e;
   background: #1c1917;
   border: 1px dashed #44403c;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 8px 12px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   text-align: center;
 }
 
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 18px;
 }
 
 /* --- CARD DESIGN --- */
@@ -127,11 +154,15 @@ header {
   background: var(--bg-card);
   display: flex;
   flex-direction: column;
+  border-radius: 16px;
+  transition: transform 0.25s ease;
 }
+.card:active { transform: scale(0.97); }
+
 .img-box {
   background: var(--bg-img-box);
   border-radius: 20px;
-  padding: 30px 10px 10px 10px;
+  padding: 28px 10px 10px 10px;
   position: relative;
   aspect-ratio: 4/5;
   display: flex;
@@ -141,78 +172,124 @@ header {
   overflow: hidden;
 }
 .img-box img {
-  width: 90%;
-  height: 90%;
+  width: 88%;
+  height: 88%;
   object-fit: cover;
   border-radius: 50%;
   transition: transform 0.4s;
   box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
-.card:hover .img-box img { transform: scale(1.05); }
+.card:hover .img-box img { transform: scale(1.06); }
 
 .badge-avail {
   position: absolute;
   top: 12px;
-  left: 14px;
-  font-size: 0.65rem;
+  left: 12px;
+  font-size: 0.62rem;
   font-weight: 500;
   color: #fff;
-  opacity: 0.8;
+  opacity: 0.75;
+  background: rgba(0,0,0,0.4);
+  padding: 3px 8px;
+  border-radius: 20px;
 }
 .badge-price {
   position: absolute;
   top: 12px;
-  right: 14px;
-  font-size: 0.85rem;
+  right: 12px;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--price-color);
+  background: rgba(0,0,0,0.45);
+  padding: 3px 8px;
+  border-radius: 20px;
 }
 
 .card-title {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 600;
   line-height: 1.3;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
+  padding: 0 2px;
 }
-/* line-clamp dihilangkan agar teks tampil full */
 .card-desc {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--text-muted);
   line-height: 1.45;
   margin-bottom: 12px;
+  padding: 0 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .card-bottom {
-  margin-top: auto; /* Ini membuat bottom selalu rata ke bawah meski tinggi teks beda-beda */
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 2px 4px;
 }
 .kcal-text {
   font-size: 0.65rem;
   color: var(--text-muted);
   font-weight: 500;
 }
-.add-btn {
-  background: none;
+
+/* Quantity control di kartu */
+.qty-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #1a1a1a;
+  border-radius: 24px;
+  padding: 3px;
+  border: 1px solid #2a2a2a;
+  min-width: 36px;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.qty-wrap.has-qty {
+  min-width: 92px;
+  background: #1f1f1f;
+  border-color: #333;
+}
+.qty-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   border: none;
+  background: transparent;
   color: #fff;
+  font-size: 1.15rem;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
-  transition: transform 0.2s;
+  transition: all 0.2s;
+  line-height: 1;
 }
-.add-btn svg { width: 18px; height: 18px; }
-.add-btn:active { transform: translateX(4px); }
-.add-btn.added svg { color: #4ade80; }
+.qty-btn:active { transform: scale(0.88); }
+.qty-btn.plus { background: #fff; color: #000; }
+.qty-wrap.has-qty .qty-btn.plus { background: transparent; color: #fff; }
+.qty-num {
+  font-weight: 700;
+  font-size: 0.9rem;
+  min-width: 22px;
+  text-align: center;
+  display: none;
+}
+.qty-wrap.has-qty .qty-num { display: block; }
+.qty-btn.minus { display: none; }
+.qty-wrap.has-qty .qty-btn.minus { display: flex; }
 
 /* --- CART BAR & MODALS --- */
 .cart-bar {
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  background: rgba(22, 24, 29, 0.95);
-  backdrop-filter: blur(10px);
+  background: rgba(22, 24, 29, 0.96);
+  backdrop-filter: blur(12px);
   border-top: 1px solid #2a2a2a;
   padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
   display: flex;
@@ -220,14 +297,14 @@ header {
   justify-content: space-between;
   z-index: 100;
   transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .cart-bar.show { transform: translateY(0); }
 .cart-info { display: flex; align-items: center; gap: 14px; }
 .cart-count {
   background: #fff;
   color: #000;
-  width: 32px; height: 32px;
+  width: 34px; height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -236,18 +313,20 @@ header {
   font-size: 0.95rem;
 }
 .cart-count.pop { animation: pop 0.3s ease; }
-@keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
+@keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.35)} }
 .cart-total { font-weight: 600; font-size: 1.1rem; color: #fff; }
 .btn-order {
   background: #fff;
   color: #000;
   border: none;
   border-radius: 30px;
-  padding: 10px 22px;
+  padding: 11px 24px;
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
+  transition: transform 0.2s;
 }
+.btn-order:active { transform: scale(0.96); }
 
 .modal {
   position: fixed; inset: 0;
@@ -269,7 +348,7 @@ header {
 @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .modal-title { font-size: 1.2rem; font-weight: 600; }
-.close-btn { background: #222; color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 1rem; cursor: pointer; }
+.close-btn { background: #222; color: #fff; border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 1rem; cursor: pointer; }
 
 .cart-item {
   display: flex; justify-content: space-between; align-items: center;
@@ -278,9 +357,9 @@ header {
 .cart-item-name { font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
 .cart-item-price { color: #a3a3a3; font-weight: 600; font-size: 0.9rem; }
 .qty-control { display: flex; align-items: center; gap: 12px; }
-.qty-btn {
-  width: 30px; height: 30px; border-radius: 50%;
-  border: 1px solid #444; background: transparent; color: #fff; font-size: 1.1rem; cursor: pointer;
+.qty-btn-modal {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid #444; background: transparent; color: #fff; font-size: 1.15rem; cursor: pointer;
 }
 .checkout-btn {
   width: 100%; background: #fff; color: #000; border: none; border-radius: 16px;
@@ -299,6 +378,15 @@ header {
 .order-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #2a2a2a; font-size: 0.9rem; color: #ddd;}
 .order-item:last-child { border-bottom: none; }
 .btn-new-order { width: 100%; background: #fff; color: #000; border: none; border-radius: 16px; padding: 16px; font-size: 1.05rem; font-weight: 600; margin-top: auto; }
+
+/* Swipe hint */
+.swipe-hint {
+  text-align: center;
+  font-size: 0.68rem;
+  color: #555;
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
+}
 </style>
 </head>
 <body>
@@ -306,805 +394,918 @@ header {
 <div class="topbar">
   <header>
     <div class="logo">Balance Bar <span>Healthy Café & Resto</span></div>
-    <div style="font-size:1.2rem; cursor:pointer;" onclick="openCart()">🛒</div>
+    <div style="font-size:1.3rem; cursor:pointer; padding:4px;" onclick="openCart()">🛒</div>
   </header>
   
-  <div class="tabs">
-    <button class="tab active" data-section="chicken">
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-section="chicken" data-index="0">
       <div class="icon-box">🍗</div>
       <span class="tab-text">Ayam</span>
     </button>
-    <button class="tab" data-section="rice">
+    <button class="tab" data-section="rice" data-index="1">
       <div class="icon-box">🍚</div>
       <span class="tab-text">Nasi & Mie</span>
     </button>
-    <button class="tab" data-section="juice">
+    <button class="tab" data-section="juice" data-index="2">
       <div class="icon-box">🧃</div>
       <span class="tab-text">Detox</span>
     </button>
-    <button class="tab" data-section="smoothie">
+    <button class="tab" data-section="smoothie" data-index="3">
       <div class="icon-box">🍹</div>
       <span class="tab-text">Smoothie</span>
     </button>
-    <button class="tab" data-section="coffee">
+    <button class="tab" data-section="coffee" data-index="4">
       <div class="icon-box">☕</div>
       <span class="tab-text">Coffee</span>
     </button>
-    <button class="tab" data-section="tea">
+    <button class="tab" data-section="tea" data-index="5">
       <div class="icon-box">🍵</div>
       <span class="tab-text">Tea</span>
     </button>
-    <button class="tab" data-section="fruit">
+    <button class="tab" data-section="fruit" data-index="6">
       <div class="icon-box">🍓</div>
       <span class="tab-text">Fruit</span>
     </button>
   </div>
 </div>
 
+<div class="sections-wrapper" id="sectionsWrapper">
+
 <!-- ==================== AYAM ==================== -->
-<section class="section active" id="chicken">
+<section class="section active" id="chicken" data-index="0">
   <div class="section-title">Ayam Marinated</div>
+  <div class="swipe-hint">← geser untuk ganti kategori →</div>
   <div class="menu-grid">
-    <div class="card">
+    <div class="card" data-name="Chili Lime Marinated Chicken Breast" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image1.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Chili Lime Marinated Chicken Breast</h3>
-      <p class="card-desc">A bold burst of zesty lime meets fiery chili heat — a tropical flavor dance that wakes up your taste buds with every juicy bite!</p>
+      <h3 class="card-title">Chili Lime Chicken</h3>
+      <p class="card-desc">Pedas cabai ketemu segarnya limau. Ayam juicy yang bikin lidah bergoyang di setiap gigitan!</p>
       <div class="card-bottom">
         <span class="kcal-text">150 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Chili Lime Marinated Chicken Breast',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Italian Herb Marinated Chicken Breast" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image2.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Italian Herb Marinated Chicken Breast</h3>
-      <p class="card-desc">Experience the warmth of the Mediterranean with aromatic oregano, basil, and thyme swirling through every succulent piece — a true taste of Italy on your plate.</p>
+      <h3 class="card-title">Italian Herb Chicken</h3>
+      <p class="card-desc">Aroma oregano, basil & thyme yang hangat. Rasakan sentuhan Mediterania di setiap suapan.</p>
       <div class="card-bottom">
         <span class="kcal-text">165 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Italian Herb Marinated Chicken Breast',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Lemon Garlic Marinated Chicken Breast" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image3.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Lemon Garlic Marinated Chicken Breast</h3>
-      <p class="card-desc">A refreshing blend of bright lemon and fragrant garlic, wrapping tender chicken in a timeless, flavorful hug that's light yet unforgettable.</p>
+      <h3 class="card-title">Lemon Garlic Chicken</h3>
+      <p class="card-desc">Lemon segar bertemu bawang putih harum. Ringan, lezat, dan susah dilupakan.</p>
       <div class="card-bottom">
         <span class="kcal-text">140 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Lemon Garlic Marinated Chicken Breast',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Taichan Marinated Chicken Breast" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image4.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Taichan Marinated Chicken Breast</h3>
-      <p class="card-desc">Simple yet electrifying, grilled chicken breast drenched in spicy, tangy lime chili sauce — a legendary street food sensation that keeps you coming back for more.</p>
+      <h3 class="card-title">Taichan Chicken</h3>
+      <p class="card-desc">Ayam bakar disiram saus cabai limau pedas-asam. Street food legendaris yang bikin ketagihan!</p>
       <div class="card-bottom">
         <span class="kcal-text">165 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Taichan Marinated Chicken Breast',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ==================== NASI & MIE ==================== -->
-<section class="section" id="rice">
+<section class="section" id="rice" data-index="1">
   <div class="section-title">Nasi & Mie</div>
+  <div class="swipe-hint">← geser untuk ganti kategori →</div>
   <div class="menu-grid">
-    <div class="card">
+    <div class="card" data-name="Nasi Ayam Kampung Kalasan" data-price="36000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$36k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 36.000</span>
         <img src="image5.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Nasi Ayam Kampung Kalasan</h3>
-      <p class="card-desc">A traditional Indonesian dish featuring tender, deep-fried free-range chicken (ayam kampung) marinated in sweet-spiced Kalasan-style seasoning. Served with steamed white rice, fresh vegetables, and a side of sweet and spicy sambal.</p>
+      <h3 class="card-title">Nasi Ayam Kalasan</h3>
+      <p class="card-desc">Ayam kampung goreng dengan bumbu Kalasan manis-pedas. Disajikan dengan nasi hangat & sambal.</p>
       <div class="card-bottom">
         <span class="kcal-text">600 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Nasi Ayam Kampung Kalasan',36000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Nasi Ayam Goreng Kampung Berempah" data-price="36000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$36k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 36.000</span>
         <img src="image6.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Nasi Ayam Goreng Kampung Berempah</h3>
-      <p class="card-desc">A bold and aromatic Indonesian dish featuring crispy fried free-range chicken, marinated in a rich blend of traditional spices and herbs. The chicken is deep-fried to golden perfection, delivering a crunchy outer layer and tender, flavorful meat inside.</p>
+      <h3 class="card-title">Ayam Goreng Berempah</h3>
+      <p class="card-desc">Ayam kampung goreng renyah berbalut rempah tradisional. Gurih di luar, juicy di dalam.</p>
       <div class="card-bottom">
         <span class="kcal-text">600 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Nasi Ayam Goreng Kampung Berempah',36000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Indomie Rebus Telur" data-price="23000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$23k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 23.000</span>
         <img src="image7.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Indomie Rebus Telur</h3>
-      <p class="card-desc">A simple yet satisfying comfort dish made with Indomie instant noodles, served hot in a flavorful broth and topped with a soft-boiled or poached egg. The noodles are seasoned with Indomie's signature spice blend, creating a savory, slightly spicy, and umami-rich taste.</p>
+      <p class="card-desc">Indomie kuah hangat dengan telur. Simpel, mengenyangkan, dan selalu bikin kangen.</p>
       <div class="card-bottom">
         <span class="kcal-text">450 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Indomie Rebus Telur',23000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Indomie Goreng Telur" data-price="23000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$23k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 23.000</span>
         <img src="image8.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Indomie Goreng Telur</h3>
-      <p class="card-desc">A beloved Indonesian instant noodle dish featuring stir-fried Indomie noodles tossed in a savory-sweet seasoning blend, then topped with a fried egg for extra richness. The noodles are chewy and flavorful, with hints of soy sauce, garlic, and a touch of spice.</p>
+      <p class="card-desc">Indomie goreng klasik plus telur. Kenyal, gurih, sedikit pedas — comfort food sejati.</p>
       <div class="card-bottom">
         <span class="kcal-text">450 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Indomie Goreng Telur',23000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ==================== JUICE & DETOX ==================== -->
-<section class="section" id="juice">
+<section class="section" id="juice" data-index="2">
   <div class="section-title">Juice & Detox</div>
+  <div class="swipe-hint">← geser untuk ganti kategori →</div>
   <div class="menu-grid">
-    <div class="card">
+    <div class="card" data-name="Green Zest" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image9.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Green Zest</h3>
-      <p class="card-desc">A hydrating and cleansing green juice packed with antioxidants and enzymes to flush toxins, support liver health, and boost your metabolism.</p>
+      <p class="card-desc">Jus hijau penuh antioksidan. Membersihkan tubuh, dukung hati, dan boost metabolisme.</p>
       <div class="card-bottom">
         <span class="kcal-text">70 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Green Zest',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Reduce Bloating" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image10.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Reduce Bloating</h3>
-      <p class="card-desc">This refreshing and warming detox blend reduces bloating, supports digestion, and fights inflammation with natural ingredients.</p>
+      <p class="card-desc">Ramuan segar yang bantu kurangi kembung, lancarkan pencernaan, dan redakan peradangan.</p>
       <div class="card-bottom">
         <span class="kcal-text">50 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Reduce Bloating',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Rebit Balance" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image11.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Rebit Balance</h3>
-      <p class="card-desc">An earthy, nutrient-rich juice that supports blood circulation, improves stamina, and gives your body a natural energy boost.</p>
+      <p class="card-desc">Jus kaya nutrisi untuk sirkulasi darah lebih baik, stamina naik, dan energi alami.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Rebit Balance',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Nectar Balance" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image12.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Nectar Balance</h3>
-      <p class="card-desc">A light and naturally sweet juice, perfect for daily detox. Rich in fiber, vitamins, and antioxidants to support your overall wellness.</p>
+      <p class="card-desc">Manis alami, ringan, dan sempurna untuk detox harian. Kaya serat & vitamin.</p>
       <div class="card-bottom">
         <span class="kcal-text">90 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Nectar Balance',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="100% Pure Apple" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image13.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Apple</h3>
-      <p class="card-desc">Just apples. Nothing else. Cold-pressed, crisp, and naturally sweet — it's pure green (or red) apple goodness in a glass. No sugar, no additives, no drama.</p>
+      <p class="card-desc">Murni apel, tanpa tambahan apapun. Segar, manis alami, dan menyehatkan.</p>
       <div class="card-bottom">
         <span class="kcal-text">110 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'100% Pure Apple',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="100% Pure Orange" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image14.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Orange</h3>
-      <p class="card-desc">Straight from the fruit — no fakes, no fluff. Just fresh, sun-kissed oranges squeezed into a glass of juicy joy. Naturally sweet, vitamin-packed, and ready to brighten your day.</p>
+      <p class="card-desc">Jeruk segar diperas langsung. Manis, berair, dan penuh vitamin C.</p>
       <div class="card-bottom">
         <span class="kcal-text">110 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'100% Pure Orange',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="100% Pure Pear" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image15.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Pear</h3>
-      <p class="card-desc">Smooth, mellow, and naturally sweet — just real pears in liquid form. No sugar, no additives — only the juicy, golden taste of 100% pure pear.</p>
+      <p class="card-desc">Pir murni yang lembut & manis alami. Tidak ada gula tambahan, hanya buah asli.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'100% Pure Pear',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="100% Pure Grape" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image16.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Grape</h3>
-      <p class="card-desc">All the juicy goodness of ripe grapes, squeezed fresh with zero additives. Sweet, tangy, and bursting with natural flavor — just grapes doing their thing.</p>
+      <p class="card-desc">Anggur segar diperas tanpa tambahan. Manis, sedikit asam, dan sangat menyegarkan.</p>
       <div class="card-bottom">
         <span class="kcal-text">150 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'100% Pure Grape',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="100% Pure Pineapple" data-price="38000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$38k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
         <img src="image17.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">100% Pure Pineapple</h3>
-      <p class="card-desc">Tropical sunshine in a glass. Freshly pressed pineapple juice, naturally sweet and tangy, with zero additives. Just pure, juicy pineapple goodness.</p>
+      <p class="card-desc">Nanas tropis murni. Manis-asam yang bikin semangat, tanpa gula tambahan.</p>
       <div class="card-bottom">
         <span class="kcal-text">130 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'100% Pure Pineapple',38000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ==================== SMOOTHIE ==================== -->
-<section class="section" id="smoothie">
+<section class="section" id="smoothie" data-index="3">
   <div class="section-title">Smoothie Bowl & Special</div>
-  <div class="addon-note">+ Tambah Whey Protein: Rp 35k</div>
+  <div class="addon-note">+ Tambah Whey Protein: Rp 35.000</div>
+  <div class="swipe-hint">← geser untuk ganti kategori →</div>
   <div class="menu-grid">
-    <div class="card">
+    <div class="card" data-name="Magenta Bliss" data-price="45000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
         <img src="image18.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Magenta Bliss</h3>
-      <p class="card-desc">Smooth. Dreamy. Irresistibly vibrant. Creamy dragon fruit blended into a velvety purple potion. Lightly sweet, beautifully bold — it's wellness with a wink of indulgence.</p>
+      <p class="card-desc">Buah naga ungu yang creamy & vibrant. Manis ringan, indah dipandang, enak diminum.</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Magenta Bliss',45000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Mango Mistique" data-price="45000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
         <img src="image19.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Mango Mistique</h3>
-      <p class="card-desc">A tropical seduction in every sip. Luscious mango purée swirled with a splash of citrus and a hint of coconut — this golden elixir is smooth, juicy, and impossible to resist.</p>
+      <p class="card-desc">Mangga matang + sentuhan citrus & kelapa. Tropis, juicy, dan susah berhenti.</p>
       <div class="card-bottom">
         <span class="kcal-text">120 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Mango Mistique',45000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Choco Monkey" data-price="45000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
         <img src="image20.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Choco Monkey</h3>
-      <p class="card-desc">Sinfully smooth and playfully rich. Ripe banana and dark chocolate collide in this decadent shake — thick, creamy, and oh-so-satisfying. It's dessert in a glass.</p>
+      <p class="card-desc">Pisang + cokelat hitam yang creamy. Kental, manis, dan seperti dessert dalam gelas.</p>
       <div class="card-bottom">
         <span class="kcal-text">250 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Choco Monkey',45000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Pinky Dream" data-price="45000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
         <img src="image21.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Pinky Dream</h3>
-      <p class="card-desc">Soft, sweet, and blushing with flavor. A creamy strawberry fusion with hints of vanilla or rose. Delicate yet indulgent — like sipping a daydream.</p>
+      <p class="card-desc">Stroberi creamy dengan sentuhan vanilla. Lembut, manis, dan bikin mood naik.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Pinky Dream',45000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Pinacolada" data-price="45000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$45k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
         <img src="image22.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Pinacolada</h3>
-      <p class="card-desc">Your tropical escape — no passport required. Juicy pineapple and creamy coconut come together in a refreshingly rich mocktail that tastes like pure island bliss.</p>
+      <p class="card-desc">Nanas + kelapa creamy. Rasanya seperti liburan tropis tanpa perlu paspor.</p>
       <div class="card-bottom">
         <span class="kcal-text">200 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Pinacolada',45000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Banana Glow" data-price="30000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
         <img src="image23.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Banana Glow</h3>
-      <p class="card-desc">When mango meets banana, it's pure smoothie magic. Think tropical sunset in a cup, with vibes smoother than your best pickup line. Creamy, dreamy, and dangerously sippable.</p>
+      <p class="card-desc">Mangga ketemu pisang — smoothie magis yang creamy dan bikin happy.</p>
       <div class="card-bottom">
         <span class="kcal-text">200 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Banana Glow',30000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Golden Sunset" data-price="30000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
         <img src="image24.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Golden Sunset</h3>
-      <p class="card-desc">Like a tropical vacation in a cup—if your travel guide was a mango and your bestie was a strawberry. Sweet, cheeky, and totally irresistible. Zero passport required!</p>
+      <p class="card-desc">Mangga + stroberi. Manis, ceria, dan terasa seperti matahari terbenam tropis.</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Golden Sunset',30000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Island Cream" data-price="30000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
         <img src="image25.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Island Cream</h3>
-      <p class="card-desc">The ultimate odd couple—pineapple brings the party, banana brings the chill. Together? They're a creamy, zesty duo that'll make your mouth dance. Smooth, groovy, and gone in seconds.</p>
+      <p class="card-desc">Nanas + pisang yang creamy dan sedikit zest. Duo tropis yang bikin ketagihan.</p>
       <div class="card-bottom">
         <span class="kcal-text">200 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Island Cream',30000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Cassadate Bliss" data-price="30000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
         <img src="image26.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Cassadate Bliss</h3>
-      <p class="card-desc">Earthy, sweet, and richly nostalgic. A creamy blend of soft fermented cassava (tape) and natural Medjool dates creates a velvety drink that's both traditional and modern. Slightly tangy, deeply sweet, and energizing.</p>
+      <p class="card-desc">Tape singkong + kurma Medjool. Manis alami, sedikit asam, dan penuh energi.</p>
       <div class="card-bottom">
         <span class="kcal-text">200 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Cassadate Bliss',30000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Sourkiss" data-price="30000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$30k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
         <img src="image27.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Sourkiss</h3>
-      <p class="card-desc">A wild ride of dragonfruit dreams and soursop sass! It's tangy, it's funky, it's the smoothie your taste buds didn't know they needed. Warning: may cause sudden happiness.</p>
+      <p class="card-desc">Buah naga + sirsak. Asam manis yang unik dan bikin mood langsung happy!</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Sourkiss',30000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ==================== KOPI ==================== -->
-<section class="section" id="coffee">
+<section class="section" id="coffee" data-index="4">
   <div class="section-title">Coffee Selection</div>
+  <div class="swipe-hint">← geser untuk ganti kategori →</div>
   <div class="menu-grid">
-    <div class="card">
+    <div class="card" data-name="Espresso" data-price="20000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$20k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 20.000</span>
         <img src="image28.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Espresso</h3>
-      <p class="card-desc">Rich, intense, and straight to the point. A pure shot of coffee energy.</p>
+      <p class="card-desc">Kental, intens, dan langsung ke inti. Satu shot energi kopi murni.</p>
       <div class="card-bottom">
         <span class="kcal-text">5 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Espresso',20000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Americano" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image29.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Americano</h3>
-      <p class="card-desc">Smooth and bold—espresso softened with hot water for easy sipping.</p>
+      <p class="card-desc">Espresso yang dilunakkan air panas. Bold tapi tetap enak diminum.</p>
       <div class="card-bottom">
         <span class="kcal-text">10 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Americano',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Latte" data-price="29000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$29k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 29.000</span>
         <img src="image30.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Latte</h3>
-      <p class="card-desc">Velvety steamed milk poured over espresso. Comfort in a cup.</p>
+      <p class="card-desc">Susu steamed lembut di atas espresso. Hangat dan menenangkan.</p>
       <div class="card-bottom">
         <span class="kcal-text">120 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Latte',29000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Cappuccino" data-price="29000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$29k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 29.000</span>
         <img src="image31.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Cappuccino</h3>
-      <p class="card-desc">A perfect balance of espresso, milk, and airy foam. Classic and comforting.</p>
+      <p class="card-desc">Kombinasi sempurna espresso, susu, dan foam. Klasik yang selalu nyaman.</p>
       <div class="card-bottom">
         <span class="kcal-text">90 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Cappuccino',29000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Affogato" data-price="35000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$35k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 35.000</span>
         <img src="image32.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Affogato</h3>
-      <p class="card-desc">Silky vanilla ice cream drowned in hot espresso. Sweet, bold, unforgettable.</p>
+      <p class="card-desc">Es krim vanilla dilumuri espresso panas. Manis, bold, dan tak terlupakan.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Affogato',35000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Brown Sugar Coffee" data-price="29000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$29k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 29.000</span>
         <img src="image33.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Brown Sugar Coffee</h3>
-      <p class="card-desc">Espresso meets creamy milk and brown sugar syrup. Smooth, sweet, and satisfying.</p>
+      <p class="card-desc">Espresso + susu + sirup gula aren. Lembut, manis, dan memuaskan.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Brown Sugar Coffee',29000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Malaysian Coffee O" data-price="27000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$27k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 27.000</span>
         <img src="image34.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Malaysian Coffee O</h3>
-      <p class="card-desc">Kopi O – Strong black coffee with sugar. Bold and straightforward.</p>
+      <h3 class="card-title">Kopi O Malaysia</h3>
+      <p class="card-desc">Kopi hitam kuat dengan gula. Bold dan to the point.</p>
       <div class="card-bottom">
         <span class="kcal-text">60 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Malaysian Coffee O',27000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Malaysian Coffee C" data-price="27000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$27k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 27.000</span>
         <img src="image35.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Malaysian Coffee C</h3>
-      <p class="card-desc">Kopi C – Creamy with evaporated milk. Rich with a nostalgic twist.</p>
+      <h3 class="card-title">Kopi C Malaysia</h3>
+      <p class="card-desc">Kopi dengan susu evaporasi. Creamy dan punya rasa nostalgia.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Malaysian Coffee C',27000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ==================== TEH & LAINNYA ==================== -->
-<section class="section" id="tea">
-  <div class="section-title">Tea & Warm Drinks</div>
+<section class="section" id="tea" data-index="5">
+  <div class="section-title">Tea & Minuman Hangat</div>
+  <div class="swipe-hint">← geser untuk ganti kategori →</div>
   <div class="menu-grid">
-    <div class="card">
+    <div class="card" data-name="Sliming Tea Honey" data-price="27000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$27k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 27.000</span>
         <img src="image36.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Sliming Tea Honey</h3>
-      <p class="card-desc">Herbal tea blend to support metabolism, sweetened with natural honey.</p>
+      <p class="card-desc">Teh herbal yang bantu metabolisme, manisnya dari madu alami.</p>
       <div class="card-bottom">
         <span class="kcal-text">30 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Sliming Tea Honey',27000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Lemon Tea Honey" data-price="24000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$24k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 24.000</span>
         <img src="image37.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Lemon Tea Honey</h3>
-      <p class="card-desc">Black tea with fresh lemon juice and honey for a refreshing, immune-boosting drink.</p>
+      <p class="card-desc">Teh hitam + lemon segar + madu. Menyegarkan dan bagus untuk imun.</p>
       <div class="card-bottom">
         <span class="kcal-text">40 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Lemon Tea Honey',24000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Hainan Milk Tea" data-price="29000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$29k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 29.000</span>
         <img src="image38.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Hainan Milk Tea</h3>
-      <p class="card-desc">Creamy milk tea inspired by Hainan style, served warm or iced.</p>
+      <p class="card-desc">Milk tea creamy ala Hainan. Bisa hangat atau dingin, sama-sama enak.</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Hainan Milk Tea',29000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Wedang Jahe" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image39.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Wedang Jahe</h3>
-      <p class="card-desc">Traditional Javanese hot drink made from ginger and palm sugar.</p>
+      <p class="card-desc">Minuman hangat tradisional jahe + gula aren. Hangat di badan, nyaman di hati.</p>
       <div class="card-bottom">
         <span class="kcal-text">80 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Wedang Jahe',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Wedang Uwuh" data-price="23000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$23k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 23.000</span>
         <img src="image40.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Wedang Uwuh</h3>
-      <p class="card-desc">A warm, aromatic blend of ginger, cinnamon, clove, and other traditional herbs.</p>
+      <p class="card-desc">Campuran jahe, kayu manis, cengkeh & rempah. Aromatik dan menghangatkan.</p>
       <div class="card-bottom">
         <span class="kcal-text">70 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Wedang Uwuh',23000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Fresh Coconut" data-price="25000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$25k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 25.000</span>
         <img src="image41.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Fresh Coconut</h3>
-      <p class="card-desc">Naturally hydrating drink with electrolytes, served straight from the coconut.</p>
+      <h3 class="card-title">Kelapa Muda</h3>
+      <p class="card-desc">Air kelapa segar langsung dari buahnya. Hidrasi alami penuh elektrolit.</p>
       <div class="card-bottom">
         <span class="kcal-text">45 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Fresh Coconut',25000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Infuse Water" data-price="15000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$15k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 15.000</span>
         <img src="image42.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Infuse Water</h3>
-      <p class="card-desc">Chilled water infused with fresh fruits or herbs (e.g., lemon, cucumber, mint).</p>
+      <p class="card-desc">Air dingin dengan irisan buah/herbal segar (lemon, mentimun, mint).</p>
       <div class="card-bottom">
         <span class="kcal-text">5 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Infuse Water',15000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Whey Protein" data-price="55000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$55k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 55.000</span>
         <img src="image43.png" onerror="handleImgError(this)">
       </div>
       <h3 class="card-title">Whey Protein</h3>
-      <p class="card-desc">High-protein shake for muscle recovery and nutrition.</p>
+      <p class="card-desc">Shake protein tinggi untuk recovery otot dan nutrisi ekstra.</p>
       <div class="card-bottom">
         <span class="kcal-text">180 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Whey Protein',55000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ==================== FRUIT JUICE ==================== -->
-<section class="section" id="fruit">
+<section class="section" id="fruit" data-index="6">
   <div class="section-title">Fruit Juice</div>
-  <div class="addon-note">All variants Rp 28.000</div>
+  <div class="addon-note">Semua varian Rp 28.000</div>
+  <div class="swipe-hint">← geser untuk ganti kategori →</div>
   <div class="menu-grid">
-    <div class="card">
+    <div class="card" data-name="Dragon Fruit" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image44.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Dragon Fruit</h3>
-      <p class="card-desc">A vibrant, naturally sweet juice made from fresh red dragon fruit. Rich in antioxidants and fiber, it's a refreshing and healthy drink.</p>
+      <h3 class="card-title">Buah Naga</h3>
+      <p class="card-desc">Jus buah naga merah yang manis alami. Kaya antioksidan & serat.</p>
       <div class="card-bottom">
         <span class="kcal-text">60 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Dragon Fruit',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Banana" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image45.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Banana</h3>
-      <p class="card-desc">A smooth, naturally sweet drink made from ripe bananas. High in potassium and energy, great for a quick and healthy recharge.</p>
+      <h3 class="card-title">Pisang</h3>
+      <p class="card-desc">Jus pisang matang yang creamy. Tinggi kalium, cocok untuk energi cepat.</p>
       <div class="card-bottom">
         <span class="kcal-text">120 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Banana',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Mango" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image46.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Mango</h3>
-      <p class="card-desc">A sweet, tropical juice made from ripe mangoes. Smooth and rich in vitamin C, perfect for a refreshing boost.</p>
+      <h3 class="card-title">Mangga</h3>
+      <p class="card-desc">Mangga matang yang manis & tropis. Kaya vitamin C dan sangat menyegarkan.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Mango',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Pineapple" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image47.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Pineapple</h3>
-      <p class="card-desc">A bright, tangy juice made from fresh pineapple. Refreshing and rich in vitamin C, perfect for hydration and digestion.</p>
+      <h3 class="card-title">Nanas</h3>
+      <p class="card-desc">Nanas segar yang asam-manis. Bagus untuk hidrasi dan pencernaan.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Pineapple',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Soursoup" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image48.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Soursoup</h3>
-      <p class="card-desc">A tangy-sweet tropical juice made from fresh soursop. Creamy, refreshing, and packed with vitamin C and antioxidants.</p>
+      <h3 class="card-title">Sirsak</h3>
+      <p class="card-desc">Sirsak yang creamy & sedikit asam. Segar, kaya vitamin C & antioksidan.</p>
       <div class="card-bottom">
         <span class="kcal-text">110 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Soursoup',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Guava" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image49.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Guava</h3>
-      <p class="card-desc">A fragrant, sweet-tart juice made from ripe guavas. High in vitamin C and fiber, great for boosting immunity.</p>
+      <h3 class="card-title">Jambu Biji</h3>
+      <p class="card-desc">Jambu manis-asam yang harum. Tinggi vitamin C, bagus untuk imun.</p>
       <div class="card-bottom">
         <span class="kcal-text">100 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Guava',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Avocado" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image50.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Avocado</h3>
-      <p class="card-desc">A rich, creamy drink made from ripe avocados. Full of healthy fats, fiber, and nutrients — perfect for a satisfying energy boost.</p>
+      <h3 class="card-title">Alpukat</h3>
+      <p class="card-desc">Alpukat creamy yang kaya lemak sehat. Mengenyangkan dan penuh nutrisi.</p>
       <div class="card-bottom">
         <span class="kcal-text">160 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Avocado',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-name="Strawberry" data-price="28000">
       <div class="img-box">
-        <span class="badge-avail">Available</span><span class="badge-price">$28k</span>
+        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
         <img src="image51.png" onerror="handleImgError(this)">
       </div>
-      <h3 class="card-title">Strawberry</h3>
-      <p class="card-desc">A fresh, sweet-tart juice made from ripe strawberries. Packed with antioxidants and vitamin C, perfect for a refreshing treat.</p>
+      <h3 class="card-title">Stroberi</h3>
+      <p class="card-desc">Stroberi segar yang manis-asam. Kaya antioksidan dan sangat menyegarkan.</p>
       <div class="card-bottom">
         <span class="kcal-text">90 kcal</span>
-        <button class="add-btn" onclick="addToCart(this,'Strawberry',28000)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
+        <div class="qty-wrap">
+          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+</div><!-- end sections-wrapper -->
 
 <!-- Cart Bar -->
 <div class="cart-bar" id="cartBar">
@@ -1115,21 +1316,21 @@ header {
       <div class="cart-total" id="cartTotal">Rp 0</div>
     </div>
   </div>
-  <button class="btn-order" onclick="openCart()">View Order</button>
+  <button class="btn-order" onclick="openCart()">Lihat Order</button>
 </div>
 
 <!-- Modal Keranjang -->
 <div class="modal" id="cartModal">
   <div class="modal-content">
     <div class="modal-header">
-      <div class="modal-title">Your Order</div>
+      <div class="modal-title">Pesanan Kamu</div>
       <button class="close-btn" onclick="closeCart()">✕</button>
     </div>
     <div id="cartItems"></div>
     <div id="cartEmpty" style="text-align:center; padding:40px 20px; color:#666; display:none">
-      Keranjang masih kosong<br>Silakan pilih menu
+      Keranjang masih kosong<br>Yuk pilih menu dulu
     </div>
-    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">Place Order</button>
+    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">Pesan Sekarang</button>
   </div>
 </div>
 
@@ -1137,17 +1338,19 @@ header {
 <div class="order-success" id="orderSuccess">
   <div style="text-align:center; margin-top:20px;">
     <div style="font-size:3rem; margin-bottom:10px;">✅</div>
-    <h2 style="color:#fff; font-size:1.5rem">Order Placed!</h2>
-    <div style="color:#a3a3a3; font-size:0.9rem; margin-top:8px;">Please show this code to cashier</div>
+    <h2 style="color:#fff; font-size:1.5rem">Pesanan Berhasil!</h2>
+    <div style="color:#a3a3a3; font-size:0.9rem; margin-top:8px;">Tunjukkan kode ini ke kasir ya</div>
     <div class="order-id" id="orderIdDisplay">#BB-0000</div>
   </div>
   <div class="order-list" id="orderListDisplay"></div>
-  <button class="btn-new-order" onclick="newOrder()">Start New Order</button>
+  <button class="btn-new-order" onclick="newOrder()">Pesan Lagi</button>
 </div>
 
 <script>
 let cart = {};
 let orderCounter = 1000;
+let currentIndex = 0;
+const sections = ['chicken','rice','juice','smoothie','coffee','tea','fruit'];
 
 function handleImgError(img) {
   img.onerror = null;
@@ -1159,23 +1362,82 @@ function handleImgError(img) {
   );
 }
 
+/* ========== TAB & SWIPE ========== */
+function goToSection(index, direction = 'right') {
+  if (index < 0 || index >= sections.length) return;
+  currentIndex = index;
+
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.remove('active', 'slide-left');
+  });
+
+  const tab = document.querySelector(`.tab[data-index="${index}"]`);
+  const section = document.getElementById(sections[index]);
+  
+  tab.classList.add('active');
+  section.classList.add('active');
+  if (direction === 'left') section.classList.add('slide-left');
+
+  // Scroll tab into view
+  tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.section).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const idx = parseInt(tab.dataset.index);
+    const dir = idx > currentIndex ? 'right' : 'left';
+    goToSection(idx, dir);
   });
 });
 
-function addToCart(btn, name, price) {
-  if (cart[name]) cart[name].qty += 1;
-  else cart[name] = { price, qty: 1 };
+/* Swipe gesture */
+let touchStartX = 0;
+let touchEndX = 0;
+const wrapper = document.getElementById('sectionsWrapper');
 
-  btn.classList.add('added');
-  setTimeout(() => btn.classList.remove('added'), 500);
+wrapper.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
 
+wrapper.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+}, { passive: true });
+
+function handleSwipe() {
+  const diff = touchStartX - touchEndX;
+  if (Math.abs(diff) < 60) return; // threshold
+  if (diff > 0) {
+    // swipe left → next
+    goToSection(currentIndex + 1, 'right');
+  } else {
+    // swipe right → prev
+    goToSection(currentIndex - 1, 'left');
+  }
+}
+
+/* ========== QUANTITY ON CARD ========== */
+function changeCardQty(btn, delta) {
+  const card = btn.closest('.card');
+  const name = card.dataset.name;
+  const price = parseInt(card.dataset.price);
+  const wrap = card.querySelector('.qty-wrap');
+  const numEl = wrap.querySelector('.qty-num');
+
+  if (!cart[name]) cart[name] = { price, qty: 0 };
+  cart[name].qty += delta;
+  if (cart[name].qty <= 0) {
+    delete cart[name];
+    wrap.classList.remove('has-qty');
+    numEl.textContent = '0';
+  } else {
+    wrap.classList.add('has-qty');
+    numEl.textContent = cart[name].qty;
+  }
+
+  // animasi pop
   const countEl = document.getElementById('cartCount');
   countEl.classList.add('pop');
   setTimeout(() => countEl.classList.remove('pop'), 300);
@@ -1183,6 +1445,23 @@ function addToCart(btn, name, price) {
   updateCartUI();
 }
 
+function syncAllCardQtys() {
+  document.querySelectorAll('.card').forEach(card => {
+    const name = card.dataset.name;
+    const wrap = card.querySelector('.qty-wrap');
+    const numEl = wrap.querySelector('.qty-num');
+    const qty = cart[name] ? cart[name].qty : 0;
+    if (qty > 0) {
+      wrap.classList.add('has-qty');
+      numEl.textContent = qty;
+    } else {
+      wrap.classList.remove('has-qty');
+      numEl.textContent = '0';
+    }
+  });
+}
+
+/* ========== CART ========== */
 function updateCartUI() {
   let total = 0, count = 0;
   for (let item in cart) {
@@ -1197,8 +1476,13 @@ function updateCartUI() {
   else bar.classList.remove('show');
 }
 
-function openCart() { renderCartItems(); document.getElementById('cartModal').classList.add('show'); }
-function closeCart() { document.getElementById('cartModal').classList.remove('show'); }
+function openCart() { 
+  renderCartItems(); 
+  document.getElementById('cartModal').classList.add('show'); 
+}
+function closeCart() { 
+  document.getElementById('cartModal').classList.remove('show'); 
+}
 
 function renderCartItems() {
   const container = document.getElementById('cartItems');
@@ -1227,9 +1511,9 @@ function renderCartItems() {
           <div class="cart-item-price">Rp ${(item.price * item.qty).toLocaleString('id-ID')}</div>
         </div>
         <div class="qty-control">
-          <button class="qty-btn" onclick="changeQty('${name}', -1)">−</button>
-          <span style="font-weight:600; width:20px; text-align:center">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty('${name}', 1)">+</button>
+          <button class="qty-btn-modal" onclick="changeQtyFromCart('${name}', -1)">−</button>
+          <span style="font-weight:600; width:22px; text-align:center">${item.qty}</span>
+          <button class="qty-btn-modal" onclick="changeQtyFromCart('${name}', 1)">+</button>
         </div>
       </div>
     `;
@@ -1240,10 +1524,13 @@ function renderCartItems() {
   container.innerHTML = html;
 }
 
-function changeQty(name, delta) {
+function changeQtyFromCart(name, delta) {
+  if (!cart[name]) return;
   cart[name].qty += delta;
   if (cart[name].qty <= 0) delete cart[name];
-  updateCartUI(); renderCartItems();
+  updateCartUI();
+  syncAllCardQtys();
+  renderCartItems();
 }
 
 function checkout() {
@@ -1270,10 +1557,14 @@ function checkout() {
 
   closeCart();
   document.getElementById('orderSuccess').classList.add('show');
-  cart = {}; updateCartUI();
+  cart = {};
+  updateCartUI();
+  syncAllCardQtys();
 }
 
-function newOrder() { document.getElementById('orderSuccess').classList.remove('show'); }
+function newOrder() { 
+  document.getElementById('orderSuccess').classList.remove('show'); 
+}
 
 document.getElementById('cartModal').addEventListener('click', function(e) {
   if (e.target === this) closeCart();
