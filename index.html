@@ -3,1572 +3,507 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Balance Bar - Premium Black Order</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0c0b0a">
+<title>Balance Bar — Menu & Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg-main: #0a0a0a;
-  --bg-nav: #121212;
-  --bg-card: #0a0a0a;
-  --bg-img-box: #16181d;
-  --text-main: #ffffff;
-  --text-muted: #8e8e93;
-  --accent: #e0e0e0;
-  --price-color: #ffffff;
-  --green: #4ade80;
-  --shadow: 0 4px 20px rgba(0,0,0,0.5);
+:root{
+  --bg:#0c0b0a;--card:#171411;--line:rgba(232,185,90,.17);--line2:rgba(255,255,255,.08);
+  --text:#f6efe2;--mute:#a59d90;--gold:#e8b95a;--ink:#1b1304;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{font-family:var(--sans);color:var(--text);line-height:1.45;max-width:560px;margin:0 auto;min-height:100vh;
+  padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));
+  background:radial-gradient(900px 420px at 50% -80px,rgba(232,185,90,.09),transparent 70%),var(--bg)}
+@media(min-width:600px){body{box-shadow:0 0 0 1px var(--line2)}}
+body.locked{overflow:hidden}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}}
+@keyframes rise{to{transform:none}}
+@keyframes pop{50%{transform:scale(1.35)}}
+@keyframes cardIn{from{opacity:0;transform:translate(var(--dx,0),24px) scale(.97)}}
+.bump{animation:pop .3s ease}
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Poppins', sans-serif;
-  background: var(--bg-main);
-  color: var(--text-main);
-  padding-bottom: calc(95px + env(safe-area-inset-bottom, 0px));
-  line-height: 1.4;
-  -webkit-tap-highlight-color: transparent;
-  overflow-x: hidden;
-}
+/* ===== OPENING (place.png) ===== */
+#hero{position:fixed;inset:0;z-index:500;display:grid;place-items:center;text-align:center;overflow:hidden;
+  background:var(--bg);transition:transform 1s cubic-bezier(.77,0,.18,1)}
+#hero.leave{transform:translateY(-100%)}
+.hero-bg{position:absolute;inset:0;overflow:hidden;
+  background:radial-gradient(700px 500px at 25% 18%,rgba(232,185,90,.3),transparent 60%),
+             radial-gradient(600px 500px at 85% 92%,rgba(201,143,45,.22),transparent 60%),
+             linear-gradient(160deg,#1c150c,#0c0b0a)}
+.hero-bg img{width:100%;height:100%;object-fit:cover;display:block;animation:kb 20s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.15) translate(-1.5%,-1%)}}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,11,10,.55),rgba(12,11,10,.4) 45%,rgba(12,11,10,.94))}
+.hero-in{position:relative;z-index:1;width:100%;max-width:560px;padding:24px}
+.hero-title{font-family:var(--serif);font-weight:700;font-size:clamp(3.6rem,18vw,5.8rem);line-height:.95;letter-spacing:-.5px}
+.hero-title .w{display:block;overflow:hidden;padding:.04em 0}
+.hero-title i{display:inline-block;font-style:normal;transform:translateY(110%);animation:rise 1.1s cubic-bezier(.2,.9,.2,1) forwards}
+.hero-title .w:nth-child(1) i{animation-delay:.3s}
+.hero-title .w:nth-child(2) i{animation-delay:.5s;color:var(--gold)}
+.hero-line{width:0;height:2px;margin:20px auto 16px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:line 1.2s .9s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes line{to{width:120px}}
+.hero-tag{color:#e6dccb;font-size:.95rem;animation:fade .9s 1.1s both}
+.hero-cta{position:relative;display:block;margin:28px auto 0;padding:16px 42px;border:0;border-radius:40px;overflow:hidden;
+  font:700 1rem var(--sans);color:var(--ink);background:linear-gradient(135deg,#f3cd7c,#d49a35);
+  box-shadow:0 10px 30px rgba(232,185,90,.3);animation:fade .9s 1.4s both;transition:transform .2s}
+.hero-cta:active{transform:scale(.96)}
+.hero-cta::before{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);animation:shine 3.4s 2.4s infinite}
+@keyframes shine{to{transform:translateX(120%)}}
+.steps{display:flex;justify-content:center;gap:22px;margin-top:36px;list-style:none;counter-reset:s;animation:fade .9s 1.6s both}
+.steps li{counter-increment:s;display:flex;flex-direction:column;align-items:center;gap:7px;max-width:88px;font-size:.7rem;line-height:1.3;color:#cbbfa9}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:24px;height:24px;border:1px solid var(--gold);border-radius:50%;color:var(--gold);font-size:.72rem;font-weight:700}
 
-/* --- HEADER & NAVIGATION --- */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  padding-top: env(safe-area-inset-top, 0px);
-  background: var(--bg-nav);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  border-bottom: 1px solid #1f1f1f;
-}
-header {
-  padding: 16px 20px 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px; }
-.logo span { font-size: 0.75rem; font-weight: 400; color: var(--text-muted); display: block; margin-top: -2px;}
+/* ===== INSTAGRAM ===== */
+.ig{display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:9px 16px;border:1px solid var(--line);border-radius:30px;background:rgba(255,255,255,.04);
+  color:var(--text);font-size:.8rem;font-weight:600;text-decoration:none;animation:fade .9s 1.8s both;transition:color .25s,border-color .25s,transform .2s}
+.ig svg{width:18px;height:18px;flex:none}
+.ig:hover{color:var(--gold);border-color:var(--gold)}
+.ig:active{transform:scale(.96)}
+.site-foot{margin:0 16px;padding:22px 0 18px;text-align:center;border-top:1px solid var(--line2)}
+.site-foot p{font-size:.74rem;color:var(--mute)}
+.site-foot .ig{margin-top:10px;animation:none}
 
-.tabs {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 12px 20px 16px;
-  background: var(--bg-nav);
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  scroll-snap-type: x mandatory;
-}
-.tabs::-webkit-scrollbar { display: none; }
+/* ===== HEADER & TABS ===== */
+.topbar{position:sticky;top:0;z-index:50;padding-top:env(safe-area-inset-top,0px);
+  background:rgba(12,11,10,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px 2px}
+.logo{font-family:var(--serif);font-size:1.4rem;font-weight:700}
+.logo span{display:block;margin-top:1px;font:500 .68rem var(--sans);color:var(--gold)}
+.cart-btn{position:relative;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#1a1612;color:var(--text);font-size:1.15rem;transition:transform .2s}
+.cart-btn:active{transform:scale(.9)}
+.cart-btn b{position:absolute;top:-4px;right:-4px;display:none;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--gold);color:var(--ink);font-size:.68rem}
+.cart-btn b.show{display:grid}
+.tabs{position:relative;display:flex;gap:14px;overflow-x:auto;padding:12px 20px 14px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;min-width:62px;display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;color:var(--mute);font:500 .7rem var(--sans);transition:color .3s}
+.ico{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;font-size:1.4rem;background:#1a1612;border:1.5px solid var(--line2);transition:all .45s cubic-bezier(.34,1.56,.64,1)}
+.tab.on{color:var(--gold)}
+.tab.on .ico{border-color:var(--gold);background:radial-gradient(circle at 30% 25%,#3d2e15,#1a1612);transform:translateY(-3px) scale(1.1);box-shadow:0 8px 22px rgba(232,185,90,.25)}
+.tab:active .ico{transform:scale(.92)}
 
-.tab {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  scroll-snap-align: center;
-  min-width: 64px;
+/* ===== MENU ===== */
+#view{padding:18px 16px 24px}
+.head{text-align:center;padding:4px 0 18px}
+.head h2{font-family:var(--serif);font-size:1.65rem;font-weight:600}
+.rule{width:52px;height:2px;margin:9px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:ruleIn .8s .15s cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes ruleIn{from{transform:scaleX(0)}}
+.note{display:inline-block;margin-top:12px;padding:8px 12px;border:1px dashed rgba(232,185,90,.32);border-radius:12px;background:rgba(232,185,90,.06);color:var(--gold);font-size:.72rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid.r{--dx:28px}.grid.l{--dx:-28px}
+.card{display:flex;flex-direction:column;overflow:hidden;background:linear-gradient(180deg,var(--card),#110f0d);border:1px solid var(--line);border-radius:20px;
+  animation:cardIn .6s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--i)*55ms);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s}
+@media(hover:hover){
+  .card:hover{transform:translateY(-4px);border-color:rgba(232,185,90,.45);box-shadow:0 14px 30px rgba(0,0,0,.5)}
+  .card:hover .pic img{transform:scale(1.08)}
 }
-.tab .icon-box {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  background: #1a1a1a;
-}
-.tab .tab-text {
-  font-size: 0.72rem;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-.tab.active { color: var(--text-main); }
-.tab.active .icon-box {
-  border-color: #fff;
-  background: #222;
-  transform: scale(1.12) translateY(-3px);
-  box-shadow: 0 6px 16px rgba(255,255,255,0.15);
-}
-.tab:active .icon-box { transform: scale(0.95); }
+.pic{position:relative;aspect-ratio:4/3;overflow:hidden;background:radial-gradient(circle at 50% 40%,#2c2217,#141110)}
+.pic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.pic::before{content:"";position:absolute;left:0;right:0;bottom:0;height:45%;z-index:1;pointer-events:none;background:linear-gradient(transparent,rgba(12,11,10,.85))}
+.pic.noimg img{display:none}
+.pic.noimg::after{content:attr(data-e);position:absolute;inset:0;display:grid;place-items:center;font-size:2.6rem;opacity:.35}
+.kcal{position:absolute;left:11px;bottom:9px;z-index:2;font-size:.66rem;font-weight:600;opacity:.9}
+.body{display:flex;flex-direction:column;flex:1;padding:12px 13px 13px}
+.body h3{margin-bottom:5px;font-family:var(--serif);font-weight:600;font-size:1.02rem;line-height:1.2}
+.body p{margin-bottom:13px;font-size:.72rem;line-height:1.5;color:var(--mute)}
+.foot{display:flex;flex-wrap:wrap;align-items:center;row-gap:9px;margin-top:auto}
+.price{flex:1 0 100%;font-family:var(--serif);font-weight:700;font-size:1.18rem;line-height:1;color:var(--gold)}
+.price.rng{font-size:.98rem}
+.price i{margin-right:3px;font:600 .62rem var(--sans);color:var(--mute)}
 
-/* --- MAIN SECTIONS & GRID --- */
-.sections-wrapper {
-  position: relative;
-  overflow: hidden;
-}
-.section { 
-  display: none; 
-  padding: 20px 16px; 
-  will-change: transform, opacity;
-}
-.section.active { 
-  display: block; 
-  animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-@keyframes slideIn { 
-  from { opacity: 0; transform: translateX(40px); } 
-  to { opacity: 1; transform: translateX(0); } 
-}
-@keyframes slideInLeft { 
-  from { opacity: 0; transform: translateX(-40px); } 
-  to { opacity: 1; transform: translateX(0); } 
-}
-.section.slide-left { animation: slideInLeft 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.step{display:flex;align-items:center;margin-left:auto;padding:3px;border:1px solid var(--line);border-radius:30px;background:#211c16}
+.step button{display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:none;color:var(--text);font-size:1.15rem;line-height:1;transition:transform .15s}
+.step button:active{transform:scale(.85)}
+.step .plus{background:var(--gold);color:var(--ink);font-weight:700}
+.step .minus,.step .num{width:0;opacity:0;overflow:hidden;transition:width .3s cubic-bezier(.2,.8,.2,1),opacity .25s}
+.step .num{display:block;text-align:center;font-weight:700;font-size:.92rem}
+.step.on .minus{width:30px;opacity:1}
+.step.on .num{width:26px;opacity:1}
 
-.section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-  text-align: center;
-  letter-spacing: 0.5px;
-}
-.addon-note {
-  font-size: 0.72rem;
-  color: #a8a29e;
-  background: #1c1917;
-  border: 1px dashed #44403c;
-  border-radius: 10px;
-  padding: 8px 12px;
-  margin-bottom: 18px;
-  text-align: center;
-}
+/* ===== CART BAR & SHEET ===== */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:100;max-width:560px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(20,18,16,.92);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line);
+  transform:translateY(110%);transition:transform .5s cubic-bezier(.34,1.3,.64,1)}
+.bar.show{transform:none}
+.bar-l{display:flex;align-items:center;gap:12px}
+.cnt{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--ink);font-weight:700}
+.bar small{display:block;font-size:.72rem;color:var(--mute)}
+.bar b{font-family:var(--serif);font-size:1.15rem}
+.go{padding:12px 24px;border:0;border-radius:30px;background:linear-gradient(135deg,#f3cd7c,#d49a35);color:var(--ink);font:700 .9rem var(--sans);transition:transform .2s}
+.go:active{transform:scale(.95)}
+.fly{position:fixed;left:0;top:0;z-index:400;width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--gold);pointer-events:none}
 
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-}
+.wrap{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.72);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.wrap.show{opacity:1;visibility:visible}
+.sheet{width:100%;max-width:560px;max-height:86vh;overflow-y:auto;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));
+  background:#141210;border:1px solid var(--line);border-bottom:0;border-radius:26px 26px 0 0;transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.9,.2,1)}
+.wrap.show .sheet{transform:none}
+.grab{width:40px;height:4px;margin:0 auto 14px;border-radius:4px;background:#3a342b}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sheet-h h2{font-family:var(--serif);font-size:1.4rem;font-weight:600}
+.x{width:34px;height:34px;border:0;border-radius:50%;background:#221d17;color:var(--text)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line2)}
+.rn b{display:block;font-size:.9rem;font-weight:600}
+.rn span{font-size:.82rem;font-weight:600;color:var(--gold)}
+.empty{display:none;padding:40px 20px;text-align:center;color:var(--mute)}
+.sum{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 14px}
+.sum span{color:var(--mute);font-size:.85rem}
+.sum b{font-family:var(--serif);font-size:1.5rem;color:var(--gold)}
+.primary{width:100%;padding:15px;border:0;border-radius:16px;background:linear-gradient(135deg,#f3cd7c,#d49a35);color:var(--ink);
+  font:700 1rem var(--sans);box-shadow:0 8px 22px rgba(232,185,90,.22);transition:transform .2s}
+.primary:active{transform:scale(.97)}
+.hint{margin-top:10px;text-align:center;font-size:.72rem;color:var(--mute)}
 
-/* --- CARD DESIGN --- */
-.card {
-  background: var(--bg-card);
-  display: flex;
-  flex-direction: column;
-  border-radius: 16px;
-  transition: transform 0.25s ease;
-}
-.card:active { transform: scale(0.97); }
+/* ===== LAYAR KASIR ===== */
+.cashier{position:fixed;inset:0;z-index:300;display:none;overflow-y:auto;
+  background:radial-gradient(800px 420px at 50% -5%,rgba(232,185,90,.17),transparent 65%),var(--bg)}
+.cashier.show{display:block}
+.c-in{max-width:560px;margin:0 auto;padding:calc(28px + env(safe-area-inset-top,0px)) 20px calc(28px + env(safe-area-inset-bottom,0px));text-align:center}
+.tick{display:block;width:74px;height:74px;margin:6px auto 12px}
+.tick circle,.tick path{fill:none;stroke:var(--gold);stroke-linecap:round;stroke-linejoin:round}
+.tick circle{stroke-width:2.5;stroke-dasharray:151;stroke-dashoffset:151;animation:draw .7s .1s ease forwards}
+.tick path{stroke-width:3;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s .7s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.c-in h2{font-family:var(--serif);font-size:1.8rem;font-weight:600}
+.c-in>p{margin-top:4px;font-size:.88rem;color:var(--mute)}
+.ticket{margin:22px 0;padding:6px 18px 18px;text-align:left;background:linear-gradient(180deg,#1a1611,#13100d);border:1px solid var(--line);border-radius:20px}
+.ticket ul{list-style:none}
+.ticket li{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:12px;padding:15px 0;border-bottom:1px dashed rgba(232,185,90,.25);
+  animation:cardIn .5s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(.55s + var(--i)*90ms)}
+.q{min-width:2.4ch;font-family:var(--serif);font-weight:700;font-size:1.55rem;line-height:1;color:var(--gold)}
+.nm{font-size:1.04rem;font-weight:600}
+.pr{font-size:.82rem;white-space:nowrap;color:var(--mute)}
+.tt{display:flex;justify-content:space-between;align-items:baseline;padding-top:16px}
+.tt span{font-size:.85rem;color:var(--mute)}
+.tt b{font-family:var(--serif);font-size:1.7rem;color:var(--gold)}
+.acts{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+.ghost{padding:15px;border:1px solid var(--line);border-radius:16px;background:none;color:var(--text);font:600 .95rem var(--sans)}
+.ghost:active{transform:scale(.97)}
 
-.img-box {
-  background: var(--bg-img-box);
-  border-radius: 20px;
-  padding: 28px 10px 10px 10px;
-  position: relative;
-  aspect-ratio: 4/5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  overflow: hidden;
-}
-.img-box img {
-  width: 88%;
-  height: 88%;
-  object-fit: cover;
-  border-radius: 50%;
-  transition: transform 0.4s;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-}
-.card:hover .img-box img { transform: scale(1.06); }
-
-.badge-avail {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  font-size: 0.62rem;
-  font-weight: 500;
-  color: #fff;
-  opacity: 0.75;
-  background: rgba(0,0,0,0.4);
-  padding: 3px 8px;
-  border-radius: 20px;
-}
-.badge-price {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--price-color);
-  background: rgba(0,0,0,0.45);
-  padding: 3px 8px;
-  border-radius: 20px;
-}
-
-.card-title {
-  font-size: 0.88rem;
-  font-weight: 600;
-  line-height: 1.3;
-  margin-bottom: 5px;
-  padding: 0 2px;
-}
-.card-desc {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  line-height: 1.45;
-  margin-bottom: 12px;
-  padding: 0 2px;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.card-bottom {
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 2px 4px;
-}
-.kcal-text {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-/* Quantity control di kartu */
-.qty-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  background: #1a1a1a;
-  border-radius: 24px;
-  padding: 3px;
-  border: 1px solid #2a2a2a;
-  min-width: 36px;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-.qty-wrap.has-qty {
-  min-width: 92px;
-  background: #1f1f1f;
-  border-color: #333;
-}
-.qty-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  color: #fff;
-  font-size: 1.15rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  line-height: 1;
-}
-.qty-btn:active { transform: scale(0.88); }
-.qty-btn.plus { background: #fff; color: #000; }
-.qty-wrap.has-qty .qty-btn.plus { background: transparent; color: #fff; }
-.qty-num {
-  font-weight: 700;
-  font-size: 0.9rem;
-  min-width: 22px;
-  text-align: center;
-  display: none;
-}
-.qty-wrap.has-qty .qty-num { display: block; }
-.qty-btn.minus { display: none; }
-.qty-wrap.has-qty .qty-btn.minus { display: flex; }
-
-/* --- CART BAR & MODALS --- */
-.cart-bar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(22, 24, 29, 0.96);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid #2a2a2a;
-  padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 100;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.cart-bar.show { transform: translateY(0); }
-.cart-info { display: flex; align-items: center; gap: 14px; }
-.cart-count {
-  background: #fff;
-  color: #000;
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.95rem;
-}
-.cart-count.pop { animation: pop 0.3s ease; }
-@keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.35)} }
-.cart-total { font-weight: 600; font-size: 1.1rem; color: #fff; }
-.btn-order {
-  background: #fff;
-  color: #000;
-  border: none;
-  border-radius: 30px;
-  padding: 11px 24px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.btn-order:active { transform: scale(0.96); }
-
-.modal {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.8);
-  z-index: 200;
-  display: none; align-items: flex-end;
-}
-.modal.show { display: flex; animation: fadeInModal 0.3s; }
-@keyframes fadeInModal { from{opacity:0} to{opacity:1} }
-.modal-content {
-  background: #121212;
-  width: 100%; max-height: 85vh;
-  border-radius: 24px 24px 0 0;
-  padding: 24px 20px calc(24px + env(safe-area-inset-bottom, 0px));
-  overflow-y: auto;
-  border-top: 1px solid #2a2a2a;
-  animation: slideUp 0.35s ease forwards;
-}
-@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.modal-title { font-size: 1.2rem; font-weight: 600; }
-.close-btn { background: #222; color: #fff; border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 1rem; cursor: pointer; }
-
-.cart-item {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 0; border-bottom: 1px solid #222;
-}
-.cart-item-name { font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
-.cart-item-price { color: #a3a3a3; font-weight: 600; font-size: 0.9rem; }
-.qty-control { display: flex; align-items: center; gap: 12px; }
-.qty-btn-modal {
-  width: 32px; height: 32px; border-radius: 50%;
-  border: 1px solid #444; background: transparent; color: #fff; font-size: 1.15rem; cursor: pointer;
-}
-.checkout-btn {
-  width: 100%; background: #fff; color: #000; border: none; border-radius: 16px;
-  padding: 16px; font-size: 1.05rem; font-weight: 600; margin-top: 24px; cursor: pointer;
-}
-
-/* Success Screen */
-.order-success {
-  position: fixed; inset: 0; background: #0a0a0a; z-index: 300;
-  display: none; flex-direction: column; padding: 30px 20px;
-  overflow-y: auto;
-}
-.order-success.show { display: flex; }
-.order-id { font-size: 2.5rem; font-weight: 700; color: #fff; margin: 10px 0 30px; letter-spacing: 2px;}
-.order-list { background: #16181d; border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid #222; }
-.order-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #2a2a2a; font-size: 0.9rem; color: #ddd;}
-.order-item:last-child { border-bottom: none; }
-.btn-new-order { width: 100%; background: #fff; color: #000; border: none; border-radius: 16px; padding: 16px; font-size: 1.05rem; font-weight: 600; margin-top: auto; }
-
-/* Swipe hint */
-.swipe-hint {
-  text-align: center;
-  font-size: 0.68rem;
-  color: #555;
-  margin-bottom: 14px;
-  letter-spacing: 0.3px;
-}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
 </style>
 </head>
-<body>
+<body class="locked">
+
+<!-- ================= OPENING SCREEN =================
+     📸 Taruh foto tempat / logo restoran di file: place.png
+        (satu folder dengan file HTML ini, disarankan ukuran portrait ± 1080×1920)
+     Kalau place.png belum ada, otomatis tampil latar emas gelap. -->
+<section id="hero">
+  <div class="hero-bg"><img src="place.png" alt="Balance Bar" onerror="this.remove()"></div>
+  <div class="hero-shade"></div>
+  <div class="hero-in">
+    <h1 class="hero-title"><span class="w"><i>Balance</i></span><span class="w"><i>Bar</i></span></h1>
+    <div class="hero-line"></div>
+    <p class="hero-tag">Healthy Café. Balance your body, balance your day.</p>
+    <button class="hero-cta" onclick="enterMenu()">Lihat Menu</button>
+    <ol class="steps"><li>Pilih menu</li><li>Tambah ke keranjang</li><li>Tunjukkan ke kasir</li></ol>
+    <a class="ig" href="https://www.instagram.com/balancebarcianjur/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>@balancebarcianjur</a>
+  </div>
+</section>
 
 <div class="topbar">
   <header>
-    <div class="logo">Balance Bar <span>Healthy Café & Resto</span></div>
-    <div style="font-size:1.3rem; cursor:pointer; padding:4px;" onclick="openCart()">🛒</div>
+    <div class="logo">Balance Bar<span>Healthy Café</span></div>
+    <button class="cart-btn" onclick="openCart()" aria-label="Buka keranjang">🛒<b id="cartBadge">0</b></button>
   </header>
-  
-  <div class="tabs" id="tabs">
-    <button class="tab active" data-section="chicken" data-index="0">
-      <div class="icon-box">🍗</div>
-      <span class="tab-text">Ayam</span>
-    </button>
-    <button class="tab" data-section="rice" data-index="1">
-      <div class="icon-box">🍚</div>
-      <span class="tab-text">Nasi & Mie</span>
-    </button>
-    <button class="tab" data-section="juice" data-index="2">
-      <div class="icon-box">🧃</div>
-      <span class="tab-text">Detox</span>
-    </button>
-    <button class="tab" data-section="smoothie" data-index="3">
-      <div class="icon-box">🍹</div>
-      <span class="tab-text">Smoothie</span>
-    </button>
-    <button class="tab" data-section="coffee" data-index="4">
-      <div class="icon-box">☕</div>
-      <span class="tab-text">Coffee</span>
-    </button>
-    <button class="tab" data-section="tea" data-index="5">
-      <div class="icon-box">🍵</div>
-      <span class="tab-text">Tea</span>
-    </button>
-    <button class="tab" data-section="fruit" data-index="6">
-      <div class="icon-box">🍓</div>
-      <span class="tab-text">Fruit</span>
-    </button>
-  </div>
+  <nav class="tabs" id="tabs"></nav>
 </div>
 
-<div class="sections-wrapper" id="sectionsWrapper">
+<main id="view"></main>
 
-<!-- ==================== AYAM ==================== -->
-<section class="section active" id="chicken" data-index="0">
-  <div class="section-title">Ayam Marinated</div>
-  <div class="swipe-hint">← geser untuk ganti kategori →</div>
-  <div class="menu-grid">
-    <div class="card" data-name="Chili Lime Marinated Chicken Breast" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image1.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Chili Lime Chicken</h3>
-      <p class="card-desc">Pedas cabai ketemu segarnya limau. Ayam juicy yang bikin lidah bergoyang di setiap gigitan!</p>
-      <div class="card-bottom">
-        <span class="kcal-text">150 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Italian Herb Marinated Chicken Breast" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image2.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Italian Herb Chicken</h3>
-      <p class="card-desc">Aroma oregano, basil & thyme yang hangat. Rasakan sentuhan Mediterania di setiap suapan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">165 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Lemon Garlic Marinated Chicken Breast" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image3.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Lemon Garlic Chicken</h3>
-      <p class="card-desc">Lemon segar bertemu bawang putih harum. Ringan, lezat, dan susah dilupakan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">140 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Taichan Marinated Chicken Breast" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image4.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Taichan Chicken</h3>
-      <p class="card-desc">Ayam bakar disiram saus cabai limau pedas-asam. Street food legendaris yang bikin ketagihan!</p>
-      <div class="card-bottom">
-        <span class="kcal-text">165 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
+<footer class="site-foot">
+  <p>Ikuti kami di Instagram</p>
+  <a class="ig" href="https://www.instagram.com/balancebarcianjur/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>@balancebarcianjur</a>
+</footer>
+
+<div class="bar" id="bar">
+  <div class="bar-l">
+    <span class="cnt" id="cartCount">0</span>
+    <div><small>Keranjang</small><b id="cartTotal">Rp 0</b></div>
   </div>
-</section>
-
-<!-- ==================== NASI & MIE ==================== -->
-<section class="section" id="rice" data-index="1">
-  <div class="section-title">Nasi & Mie</div>
-  <div class="swipe-hint">← geser untuk ganti kategori →</div>
-  <div class="menu-grid">
-    <div class="card" data-name="Nasi Ayam Kampung Kalasan" data-price="36000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 36.000</span>
-        <img src="image5.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Nasi Ayam Kalasan</h3>
-      <p class="card-desc">Ayam kampung goreng dengan bumbu Kalasan manis-pedas. Disajikan dengan nasi hangat & sambal.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">600 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Nasi Ayam Goreng Kampung Berempah" data-price="36000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 36.000</span>
-        <img src="image6.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Ayam Goreng Berempah</h3>
-      <p class="card-desc">Ayam kampung goreng renyah berbalut rempah tradisional. Gurih di luar, juicy di dalam.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">600 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Indomie Rebus Telur" data-price="23000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 23.000</span>
-        <img src="image7.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Indomie Rebus Telur</h3>
-      <p class="card-desc">Indomie kuah hangat dengan telur. Simpel, mengenyangkan, dan selalu bikin kangen.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">450 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Indomie Goreng Telur" data-price="23000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 23.000</span>
-        <img src="image8.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Indomie Goreng Telur</h3>
-      <p class="card-desc">Indomie goreng klasik plus telur. Kenyal, gurih, sedikit pedas — comfort food sejati.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">450 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== JUICE & DETOX ==================== -->
-<section class="section" id="juice" data-index="2">
-  <div class="section-title">Juice & Detox</div>
-  <div class="swipe-hint">← geser untuk ganti kategori →</div>
-  <div class="menu-grid">
-    <div class="card" data-name="Green Zest" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image9.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Green Zest</h3>
-      <p class="card-desc">Jus hijau penuh antioksidan. Membersihkan tubuh, dukung hati, dan boost metabolisme.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">70 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Reduce Bloating" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image10.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Reduce Bloating</h3>
-      <p class="card-desc">Ramuan segar yang bantu kurangi kembung, lancarkan pencernaan, dan redakan peradangan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">50 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Rebit Balance" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image11.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Rebit Balance</h3>
-      <p class="card-desc">Jus kaya nutrisi untuk sirkulasi darah lebih baik, stamina naik, dan energi alami.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">100 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Nectar Balance" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image12.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Nectar Balance</h3>
-      <p class="card-desc">Manis alami, ringan, dan sempurna untuk detox harian. Kaya serat & vitamin.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">90 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="100% Pure Apple" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image13.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">100% Pure Apple</h3>
-      <p class="card-desc">Murni apel, tanpa tambahan apapun. Segar, manis alami, dan menyehatkan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">110 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="100% Pure Orange" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image14.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">100% Pure Orange</h3>
-      <p class="card-desc">Jeruk segar diperas langsung. Manis, berair, dan penuh vitamin C.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">110 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="100% Pure Pear" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image15.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">100% Pure Pear</h3>
-      <p class="card-desc">Pir murni yang lembut & manis alami. Tidak ada gula tambahan, hanya buah asli.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">100 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="100% Pure Grape" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image16.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">100% Pure Grape</h3>
-      <p class="card-desc">Anggur segar diperas tanpa tambahan. Manis, sedikit asam, dan sangat menyegarkan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">150 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="100% Pure Pineapple" data-price="38000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 38.000</span>
-        <img src="image17.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">100% Pure Pineapple</h3>
-      <p class="card-desc">Nanas tropis murni. Manis-asam yang bikin semangat, tanpa gula tambahan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">130 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== SMOOTHIE ==================== -->
-<section class="section" id="smoothie" data-index="3">
-  <div class="section-title">Smoothie Bowl & Special</div>
-  <div class="addon-note">+ Tambah Whey Protein: Rp 35.000</div>
-  <div class="swipe-hint">← geser untuk ganti kategori →</div>
-  <div class="menu-grid">
-    <div class="card" data-name="Magenta Bliss" data-price="45000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
-        <img src="image18.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Magenta Bliss</h3>
-      <p class="card-desc">Buah naga ungu yang creamy & vibrant. Manis ringan, indah dipandang, enak diminum.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">160 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Mango Mistique" data-price="45000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
-        <img src="image19.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Mango Mistique</h3>
-      <p class="card-desc">Mangga matang + sentuhan citrus & kelapa. Tropis, juicy, dan susah berhenti.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">120 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Choco Monkey" data-price="45000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
-        <img src="image20.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Choco Monkey</h3>
-      <p class="card-desc">Pisang + cokelat hitam yang creamy. Kental, manis, dan seperti dessert dalam gelas.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">250 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Pinky Dream" data-price="45000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
-        <img src="image21.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Pinky Dream</h3>
-      <p class="card-desc">Stroberi creamy dengan sentuhan vanilla. Lembut, manis, dan bikin mood naik.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">180 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Pinacolada" data-price="45000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 45.000</span>
-        <img src="image22.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Pinacolada</h3>
-      <p class="card-desc">Nanas + kelapa creamy. Rasanya seperti liburan tropis tanpa perlu paspor.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">200 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Banana Glow" data-price="30000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
-        <img src="image23.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Banana Glow</h3>
-      <p class="card-desc">Mangga ketemu pisang — smoothie magis yang creamy dan bikin happy.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">200 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Golden Sunset" data-price="30000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
-        <img src="image24.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Golden Sunset</h3>
-      <p class="card-desc">Mangga + stroberi. Manis, ceria, dan terasa seperti matahari terbenam tropis.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">160 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Island Cream" data-price="30000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
-        <img src="image25.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Island Cream</h3>
-      <p class="card-desc">Nanas + pisang yang creamy dan sedikit zest. Duo tropis yang bikin ketagihan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">200 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Cassadate Bliss" data-price="30000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
-        <img src="image26.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Cassadate Bliss</h3>
-      <p class="card-desc">Tape singkong + kurma Medjool. Manis alami, sedikit asam, dan penuh energi.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">200 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Sourkiss" data-price="30000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 30.000</span>
-        <img src="image27.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Sourkiss</h3>
-      <p class="card-desc">Buah naga + sirsak. Asam manis yang unik dan bikin mood langsung happy!</p>
-      <div class="card-bottom">
-        <span class="kcal-text">160 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== KOPI ==================== -->
-<section class="section" id="coffee" data-index="4">
-  <div class="section-title">Coffee Selection</div>
-  <div class="swipe-hint">← geser untuk ganti kategori →</div>
-  <div class="menu-grid">
-    <div class="card" data-name="Espresso" data-price="20000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 20.000</span>
-        <img src="image28.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Espresso</h3>
-      <p class="card-desc">Kental, intens, dan langsung ke inti. Satu shot energi kopi murni.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">5 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Americano" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image29.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Americano</h3>
-      <p class="card-desc">Espresso yang dilunakkan air panas. Bold tapi tetap enak diminum.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">10 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Latte" data-price="29000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 29.000</span>
-        <img src="image30.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Latte</h3>
-      <p class="card-desc">Susu steamed lembut di atas espresso. Hangat dan menenangkan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">120 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Cappuccino" data-price="29000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 29.000</span>
-        <img src="image31.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Cappuccino</h3>
-      <p class="card-desc">Kombinasi sempurna espresso, susu, dan foam. Klasik yang selalu nyaman.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">90 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Affogato" data-price="35000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 35.000</span>
-        <img src="image32.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Affogato</h3>
-      <p class="card-desc">Es krim vanilla dilumuri espresso panas. Manis, bold, dan tak terlupakan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">180 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Brown Sugar Coffee" data-price="29000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 29.000</span>
-        <img src="image33.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Brown Sugar Coffee</h3>
-      <p class="card-desc">Espresso + susu + sirup gula aren. Lembut, manis, dan memuaskan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">180 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Malaysian Coffee O" data-price="27000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 27.000</span>
-        <img src="image34.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Kopi O Malaysia</h3>
-      <p class="card-desc">Kopi hitam kuat dengan gula. Bold dan to the point.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">60 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Malaysian Coffee C" data-price="27000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 27.000</span>
-        <img src="image35.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Kopi C Malaysia</h3>
-      <p class="card-desc">Kopi dengan susu evaporasi. Creamy dan punya rasa nostalgia.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">180 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== TEH & LAINNYA ==================== -->
-<section class="section" id="tea" data-index="5">
-  <div class="section-title">Tea & Minuman Hangat</div>
-  <div class="swipe-hint">← geser untuk ganti kategori →</div>
-  <div class="menu-grid">
-    <div class="card" data-name="Sliming Tea Honey" data-price="27000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 27.000</span>
-        <img src="image36.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Sliming Tea Honey</h3>
-      <p class="card-desc">Teh herbal yang bantu metabolisme, manisnya dari madu alami.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">30 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Lemon Tea Honey" data-price="24000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 24.000</span>
-        <img src="image37.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Lemon Tea Honey</h3>
-      <p class="card-desc">Teh hitam + lemon segar + madu. Menyegarkan dan bagus untuk imun.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">40 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Hainan Milk Tea" data-price="29000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 29.000</span>
-        <img src="image38.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Hainan Milk Tea</h3>
-      <p class="card-desc">Milk tea creamy ala Hainan. Bisa hangat atau dingin, sama-sama enak.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">160 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Wedang Jahe" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image39.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Wedang Jahe</h3>
-      <p class="card-desc">Minuman hangat tradisional jahe + gula aren. Hangat di badan, nyaman di hati.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">80 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Wedang Uwuh" data-price="23000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 23.000</span>
-        <img src="image40.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Wedang Uwuh</h3>
-      <p class="card-desc">Campuran jahe, kayu manis, cengkeh & rempah. Aromatik dan menghangatkan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">70 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Fresh Coconut" data-price="25000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 25.000</span>
-        <img src="image41.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Kelapa Muda</h3>
-      <p class="card-desc">Air kelapa segar langsung dari buahnya. Hidrasi alami penuh elektrolit.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">45 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Infuse Water" data-price="15000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 15.000</span>
-        <img src="image42.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Infuse Water</h3>
-      <p class="card-desc">Air dingin dengan irisan buah/herbal segar (lemon, mentimun, mint).</p>
-      <div class="card-bottom">
-        <span class="kcal-text">5 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Whey Protein" data-price="55000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 55.000</span>
-        <img src="image43.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Whey Protein</h3>
-      <p class="card-desc">Shake protein tinggi untuk recovery otot dan nutrisi ekstra.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">180 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== FRUIT JUICE ==================== -->
-<section class="section" id="fruit" data-index="6">
-  <div class="section-title">Fruit Juice</div>
-  <div class="addon-note">Semua varian Rp 28.000</div>
-  <div class="swipe-hint">← geser untuk ganti kategori →</div>
-  <div class="menu-grid">
-    <div class="card" data-name="Dragon Fruit" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image44.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Buah Naga</h3>
-      <p class="card-desc">Jus buah naga merah yang manis alami. Kaya antioksidan & serat.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">60 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Banana" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image45.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Pisang</h3>
-      <p class="card-desc">Jus pisang matang yang creamy. Tinggi kalium, cocok untuk energi cepat.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">120 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Mango" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image46.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Mangga</h3>
-      <p class="card-desc">Mangga matang yang manis & tropis. Kaya vitamin C dan sangat menyegarkan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">100 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Pineapple" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image47.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Nanas</h3>
-      <p class="card-desc">Nanas segar yang asam-manis. Bagus untuk hidrasi dan pencernaan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">100 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Soursoup" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image48.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Sirsak</h3>
-      <p class="card-desc">Sirsak yang creamy & sedikit asam. Segar, kaya vitamin C & antioksidan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">110 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Guava" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image49.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Jambu Biji</h3>
-      <p class="card-desc">Jambu manis-asam yang harum. Tinggi vitamin C, bagus untuk imun.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">100 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Avocado" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image50.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Alpukat</h3>
-      <p class="card-desc">Alpukat creamy yang kaya lemak sehat. Mengenyangkan dan penuh nutrisi.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">160 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" data-name="Strawberry" data-price="28000">
-      <div class="img-box">
-        <span class="badge-avail">Tersedia</span><span class="badge-price">Rp 28.000</span>
-        <img src="image51.png" onerror="handleImgError(this)">
-      </div>
-      <h3 class="card-title">Stroberi</h3>
-      <p class="card-desc">Stroberi segar yang manis-asam. Kaya antioksidan dan sangat menyegarkan.</p>
-      <div class="card-bottom">
-        <span class="kcal-text">90 kcal</span>
-        <div class="qty-wrap">
-          <button class="qty-btn minus" onclick="changeCardQty(this, -1)">−</button>
-          <span class="qty-num">0</span>
-          <button class="qty-btn plus" onclick="changeCardQty(this, 1)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-</div><!-- end sections-wrapper -->
-
-<!-- Cart Bar -->
-<div class="cart-bar" id="cartBar">
-  <div class="cart-info">
-    <div class="cart-count" id="cartCount">0</div>
-    <div>
-      <div style="font-size:0.75rem;color:#a3a3a3">Total Order</div>
-      <div class="cart-total" id="cartTotal">Rp 0</div>
-    </div>
-  </div>
-  <button class="btn-order" onclick="openCart()">Lihat Order</button>
+  <button class="go" onclick="openCart()">Lihat Pesanan</button>
 </div>
 
-<!-- Modal Keranjang -->
-<div class="modal" id="cartModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div class="modal-title">Pesanan Kamu</div>
-      <button class="close-btn" onclick="closeCart()">✕</button>
-    </div>
+<!-- Keranjang -->
+<div class="wrap" id="cartModal" onclick="if(event.target===this)closeCart()">
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="sheet-h"><h2>Pesanan Kamu</h2><button class="x" onclick="closeCart()" aria-label="Tutup">✕</button></div>
     <div id="cartItems"></div>
-    <div id="cartEmpty" style="text-align:center; padding:40px 20px; color:#666; display:none">
-      Keranjang masih kosong<br>Yuk pilih menu dulu
+    <div class="empty" id="cartEmpty">Keranjang masih kosong.<br>Pilih menu dulu, yuk.</div>
+    <div id="cartFoot">
+      <div class="sum"><span>Total</span><b id="sumTotal">Rp 0</b></div>
+      <button class="primary" onclick="showCashier()">Tunjukkan ke Kasir</button>
+      <p class="hint">Layar berikutnya berisi daftar menu untuk ditunjukkan ke kasir</p>
     </div>
-    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">Pesan Sekarang</button>
   </div>
 </div>
 
-<!-- Layar Sukses -->
-<div class="order-success" id="orderSuccess">
-  <div style="text-align:center; margin-top:20px;">
-    <div style="font-size:3rem; margin-bottom:10px;">✅</div>
-    <h2 style="color:#fff; font-size:1.5rem">Pesanan Berhasil!</h2>
-    <div style="color:#a3a3a3; font-size:0.9rem; margin-top:8px;">Tunjukkan kode ini ke kasir ya</div>
-    <div class="order-id" id="orderIdDisplay">#BB-0000</div>
+<!-- Layar untuk kasir: daftar menu, tanpa nomor pesanan -->
+<div class="cashier" id="cashier">
+  <div class="c-in">
+    <svg class="tick" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg>
+    <h2>Tunjukkan ke Kasir</h2>
+    <p>Daftar pesanan kamu <span id="ticketCount"></span></p>
+    <div class="ticket">
+      <ul id="ticketList"></ul>
+      <div class="tt"><span>Total</span><b id="ticketTotal"></b></div>
+    </div>
+    <div class="acts">
+      <button class="ghost" onclick="closeCashier()">Ubah Pesanan</button>
+      <button class="primary" onclick="finishOrder()">Selesai</button>
+    </div>
+    <p class="hint">Tekan Selesai setelah kasir memproses pesananmu</p>
   </div>
-  <div class="order-list" id="orderListDisplay"></div>
-  <button class="btn-new-order" onclick="newOrder()">Pesan Lagi</button>
 </div>
 
 <script>
-let cart = {};
-let orderCounter = 1000;
-let currentIndex = 0;
-const sections = ['chicken','rice','juice','smoothie','coffee','tea','fruit'];
+/* =====================================================================
+   DATA MENU — field `img` = nomor foto. Simpan foto di folder yang sama
+   dengan file HTML ini: image1.png, image2.png, ... image51.png
+   c=kategori  n=nama menu (dipakai di keranjang & layar kasir)
+   t=judul singkat di kartu (opsional)  p=harga (dipakai hitung total)  pr=kisaran harga (opsional, hanya tampilan)  k=kalori  d=deskripsi
+   ===================================================================== */
+const MENU = [
+// ===== 🍗 AYAM MARINATED (image1.png – image4.png) =====
+{c:'chicken',img:1,n:"Chili Lime Marinated Chicken Breast",t:"Chili Lime Chicken",p:38000,k:150,d:"Pedas cabai ketemu segarnya limau. Ayam juicy yang bikin lidah bergoyang di setiap gigitan!"}, // image1.png
+{c:'chicken',img:2,n:"Italian Herb Marinated Chicken Breast",t:"Italian Herb Chicken",p:38000,k:165,d:"Aroma oregano, basil & thyme yang hangat. Rasakan sentuhan Mediterania di setiap suapan."}, // image2.png
+{c:'chicken',img:3,n:"Lemon Garlic Marinated Chicken Breast",t:"Lemon Garlic Chicken",p:38000,k:140,d:"Lemon segar bertemu bawang putih harum. Ringan, lezat, dan susah dilupakan."}, // image3.png
+{c:'chicken',img:4,n:"Taichan Marinated Chicken Breast",t:"Taichan Chicken",p:38000,k:165,d:"Ayam bakar disiram saus cabai limau pedas-asam. Street food legendaris yang bikin ketagihan!"}, // image4.png
 
-function handleImgError(img) {
-  img.onerror = null;
-  img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">' +
-    '<rect width="100%" height="100%" fill="#16181d"/>' +
-    '<text x="50%" y="50%" font-size="60" text-anchor="middle" dominant-baseline="middle" opacity="0.3">🍽️</text>' +
-    '</svg>'
-  );
+// ===== 🍚 NASI & MIE (image5.png – image8.png) =====
+{c:'rice',img:5,n:"Nasi Ayam Kampung Kalasan",t:"Nasi Ayam Kalasan",p:36000,k:600,d:"Ayam kampung goreng dengan bumbu Kalasan manis-pedas. Disajikan dengan nasi hangat & sambal."}, // image5.png
+{c:'rice',img:6,n:"Nasi Ayam Goreng Kampung Berempah",t:"Ayam Goreng Berempah",p:36000,k:600,d:"Ayam kampung goreng renyah berbalut rempah tradisional. Gurih di luar, juicy di dalam."}, // image6.png
+{c:'rice',img:7,n:"Indomie Rebus Telur",p:23000,k:450,d:"Indomie kuah hangat dengan telur. Simpel, mengenyangkan, dan selalu bikin kangen."}, // image7.png
+{c:'rice',img:8,n:"Indomie Goreng Telur",p:23000,k:450,d:"Indomie goreng klasik plus telur. Kenyal, gurih, sedikit pedas — comfort food sejati."}, // image8.png
+
+// ===== 🧃 JUICE & DETOX (image9.png – image17.png) =====
+{c:'juice',img:9,n:"Green Zest",p:38000,k:70,d:"Bok choy + timun + nanas. Jus hijau penuh antioksidan untuk membersihkan tubuh, dukung hati, dan boost metabolisme."}, // image9.png
+{c:'juice',img:10,n:"Reduce Bloating",p:38000,k:50,d:"Seledri + timun + jahe. Ramuan segar yang bantu kurangi kembung, lancarkan pencernaan, dan redakan peradangan."}, // image10.png
+{c:'juice',img:11,n:"Rebit Balance",p:38000,k:100,d:"Bit + wortel + apel + pir. Jus kaya nutrisi untuk sirkulasi darah lebih baik, stamina naik, dan energi alami."}, // image11.png
+{c:'juice',img:12,n:"Nectar Balance",p:38000,k:90,d:"Apel + wortel + pir. Manis alami, ringan, dan sempurna untuk detox harian. Kaya serat & vitamin."}, // image12.png
+{c:'juice',img:13,n:"100% Pure Apple",p:38000,k:110,d:"Murni apel, tanpa tambahan apapun. Segar, manis alami, dan menyehatkan."}, // image13.png
+{c:'juice',img:14,n:"100% Pure Orange",p:38000,k:110,d:"Jeruk segar diperas langsung. Manis, berair, dan penuh vitamin C."}, // image14.png
+{c:'juice',img:15,n:"100% Pure Pear",p:38000,k:100,d:"Pir murni yang lembut & manis alami. Tidak ada gula tambahan, hanya buah asli."}, // image15.png
+{c:'juice',img:16,n:"100% Pure Grape",p:38000,k:150,d:"Anggur segar diperas tanpa tambahan. Manis, sedikit asam, dan sangat menyegarkan."}, // image16.png
+{c:'juice',img:17,n:"100% Pure Pineapple",p:38000,k:130,d:"Nanas tropis murni. Manis-asam yang bikin semangat, tanpa gula tambahan."}, // image17.png
+
+// ===== 🍹 SMOOTHIE BOWL & SPECIAL (image18.png – image27.png) =====
+{c:'smoothie',img:18,n:"Magenta Bliss",p:45000,k:160,d:"Buah naga ungu yang creamy & vibrant. Manis ringan, indah dipandang, enak diminum."}, // image18.png
+{c:'smoothie',img:19,n:"Mango Mistique",p:45000,k:120,d:"Mangga matang + sentuhan citrus & kelapa. Tropis, juicy, dan susah berhenti."}, // image19.png
+{c:'smoothie',img:20,n:"Choco Monkey",p:45000,k:250,d:"Pisang + cokelat hitam yang creamy. Kental, manis, dan seperti dessert dalam gelas."}, // image20.png
+{c:'smoothie',img:21,n:"Pinky Dream",p:45000,k:180,d:"Stroberi creamy dengan sentuhan vanilla. Lembut, manis, dan bikin mood naik."}, // image21.png
+{c:'smoothie',img:22,n:"Pinacolada",p:45000,k:200,d:"Nanas + kelapa creamy. Rasanya seperti liburan tropis tanpa perlu paspor."}, // image22.png
+{c:'smoothie',img:23,n:"Banana Glow",p:30000,k:200,d:"Mangga ketemu pisang — smoothie magis yang creamy dan bikin happy."}, // image23.png
+{c:'smoothie',img:24,n:"Golden Sunset",p:30000,k:160,d:"Mangga + stroberi. Manis, ceria, dan terasa seperti matahari terbenam tropis."}, // image24.png
+{c:'smoothie',img:25,n:"Island Cream",p:30000,k:200,d:"Nanas + pisang yang creamy dan sedikit zest. Duo tropis yang bikin ketagihan."}, // image25.png
+{c:'smoothie',img:26,n:"Cassadate Bliss",p:30000,k:200,d:"Tape singkong + kurma Medjool. Manis alami, sedikit asam, dan penuh energi."}, // image26.png
+{c:'smoothie',img:27,n:"Sourkiss",p:30000,k:160,d:"Buah naga + sirsak. Asam manis yang unik dan bikin mood langsung happy!"}, // image27.png
+
+// ===== ☕ COFFEE (image28.png – image35.png) =====
+{c:'coffee',img:28,n:"Espresso",p:20000,pr:"17.000–25.000",k:5,d:"Kental, intens, dan langsung ke inti. Satu shot energi kopi murni."}, // image28.png
+{c:'coffee',img:29,n:"Americano",p:28000,pr:"27.000–30.000",k:10,d:"Espresso yang dilunakkan air panas. Bold tapi tetap enak diminum."}, // image29.png
+{c:'coffee',img:30,n:"Latte",p:29000,pr:"28.000–30.000",k:120,d:"Susu steamed lembut di atas espresso. Hangat dan menenangkan."}, // image30.png
+{c:'coffee',img:31,n:"Cappuccino",p:29000,pr:"28.000–30.000",k:90,d:"Kombinasi sempurna espresso, susu, dan foam. Klasik yang selalu nyaman."}, // image31.png
+{c:'coffee',img:32,n:"Affogato",p:35000,k:180,d:"Es krim vanilla dilumuri espresso panas. Manis, bold, dan tak terlupakan."}, // image32.png
+{c:'coffee',img:33,n:"Brown Sugar Coffee",p:29000,pr:"28.000–30.000",k:180,d:"Espresso + susu + sirup gula aren. Lembut, manis, dan memuaskan."}, // image33.png
+{c:'coffee',img:34,n:"Malaysian Coffee O",t:"Kopi O Malaysia",p:27000,pr:"25.000–30.000",k:60,d:"Kopi hitam kuat dengan gula. Bold dan to the point."}, // image34.png
+{c:'coffee',img:35,n:"Malaysian Coffee C",t:"Kopi C Malaysia",p:27000,pr:"25.000–30.000",k:180,d:"Kopi dengan susu evaporasi. Creamy dan punya rasa nostalgia."}, // image35.png
+
+// ===== 🍵 TEH & MINUMAN HANGAT (image36.png – image43.png) =====
+{c:'tea',img:36,n:"Sliming Tea Honey",p:27000,k:30,d:"Teh herbal yang bantu metabolisme, manisnya dari madu alami."}, // image36.png
+{c:'tea',img:37,n:"Lemon Tea Honey",p:24000,pr:"23.000–25.000",k:40,d:"Teh hitam + lemon segar + madu. Menyegarkan dan bagus untuk imun."}, // image37.png
+{c:'tea',img:38,n:"Hainan Milk Tea",p:29000,pr:"28.000–30.000",k:160,d:"Milk tea creamy ala Hainan. Bisa hangat atau dingin, sama-sama enak."}, // image38.png
+{c:'tea',img:39,n:"Wedang Jahe",p:28000,k:80,d:"Minuman hangat tradisional jahe + gula aren. Hangat di badan, nyaman di hati."}, // image39.png
+{c:'tea',img:40,n:"Wedang Uwuh",p:23000,k:70,d:"Campuran jahe, kayu manis, cengkeh & rempah. Aromatik dan menghangatkan."}, // image40.png
+{c:'tea',img:41,n:"Fresh Coconut",t:"Kelapa Muda",p:25000,k:45,d:"Air kelapa segar langsung dari buahnya. Hidrasi alami penuh elektrolit."}, // image41.png
+{c:'tea',img:42,n:"Infuse Water",p:15000,k:5,d:"Air dingin dengan irisan buah/herbal segar (lemon, mentimun, mint)."}, // image42.png
+{c:'tea',img:43,n:"Whey Protein",p:55000,k:180,d:"Shake protein tinggi untuk recovery otot dan nutrisi ekstra."}, // image43.png
+
+// ===== 🍓 FRUIT JUICE (image44.png – image51.png) =====
+{c:'fruit',img:44,n:"Dragon Fruit",t:"Buah Naga",p:28000,k:60,d:"Jus buah naga merah yang manis alami. Kaya antioksidan & serat."}, // image44.png
+{c:'fruit',img:45,n:"Banana",t:"Pisang",p:28000,k:120,d:"Jus pisang matang yang creamy. Tinggi kalium, cocok untuk energi cepat."}, // image45.png
+{c:'fruit',img:46,n:"Mango",t:"Mangga",p:28000,k:100,d:"Mangga matang yang manis & tropis. Kaya vitamin C dan sangat menyegarkan."}, // image46.png
+{c:'fruit',img:47,n:"Pineapple",t:"Nanas",p:28000,k:100,d:"Nanas segar yang asam-manis. Bagus untuk hidrasi dan pencernaan."}, // image47.png
+{c:'fruit',img:48,n:"Soursoup",t:"Sirsak",p:28000,k:110,d:"Sirsak yang creamy & sedikit asam. Segar, kaya vitamin C & antioksidan."}, // image48.png
+{c:'fruit',img:49,n:"Guava",t:"Jambu Biji",p:28000,k:100,d:"Jambu manis-asam yang harum. Tinggi vitamin C, bagus untuk imun."}, // image49.png
+{c:'fruit',img:50,n:"Avocado",t:"Alpukat",p:28000,k:160,d:"Alpukat creamy yang kaya lemak sehat. Mengenyangkan dan penuh nutrisi."}, // image50.png
+{c:'fruit',img:51,n:"Strawberry",t:"Stroberi",p:28000,k:90,d:"Stroberi segar yang manis-asam. Kaya antioksidan dan sangat menyegarkan."} // image51.png
+];
+
+const CATS = [
+  {id:'chicken', ico:'🍗', tab:'Ayam',     title:'Ayam Marinated'},
+  {id:'rice',    ico:'🍚', tab:'Nasi & Mie', title:'Nasi & Mie'},
+  {id:'juice',   ico:'🧃', tab:'Detox',    title:'Juice & Detox'},
+  {id:'smoothie',ico:'🍹', tab:'Smoothie', title:'Smoothie Bowl & Special'},
+  {id:'coffee',  ico:'☕', tab:'Coffee',   title:'Coffee Selection'},
+  {id:'tea',     ico:'🍵', tab:'Tea',      title:'Tea & Minuman Hangat'},
+  {id:'fruit',   ico:'🍓', tab:'Fruit',    title:'Fruit Juice'}
+];
+const WHEY = 'Bisa tambah Whey Protein +Rp 35.000 (90 kcal / 45 g protein), sampaikan ke kasir';
+const NOTES = {juice:'Khusus varian 100% Pure: ' + WHEY, smoothie:WHEY, coffee:WHEY, fruit:WHEY};
+
+/* ---------- helper ---------- */
+const $ = id => document.getElementById(id);
+const price = m => m.p;
+const rp = n => 'Rp ' + n.toLocaleString('id-ID');
+const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+const view = $('view'), tabs = $('tabs'), bar = $('bar'), modal = $('cartModal'), cashier = $('cashier');
+let cur = 0, cart = {};
+
+function bump(el){ el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+
+/* ---------- opening ---------- */
+function enterMenu(){
+  $('hero').classList.add('leave');
+  document.body.classList.remove('locked');
+  setTimeout(() => render('r'), 450);          // ulang animasi kartu saat pembukaan terangkat
+  setTimeout(() => $('hero').remove(), 1100);
 }
 
-/* ========== TAB & SWIPE ========== */
-function goToSection(index, direction = 'right') {
-  if (index < 0 || index >= sections.length) return;
-  currentIndex = index;
+/* ---------- tab & kartu ---------- */
+tabs.innerHTML = CATS.map((c, i) =>
+  `<button class="tab${i ? '' : ' on'}" onclick="go(${i})"><span class="ico">${c.ico}</span>${c.tab}</button>`).join('');
 
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.section').forEach(s => {
-    s.classList.remove('active', 'slide-left');
-  });
-
-  const tab = document.querySelector(`.tab[data-index="${index}"]`);
-  const section = document.getElementById(sections[index]);
-  
-  tab.classList.add('active');
-  section.classList.add('active');
-  if (direction === 'left') section.classList.add('slide-left');
-
-  // Scroll tab into view
-  tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const idx = parseInt(tab.dataset.index);
-    const dir = idx > currentIndex ? 'right' : 'left';
-    goToSection(idx, dir);
-  });
-});
-
-/* Swipe gesture */
-let touchStartX = 0;
-let touchEndX = 0;
-const wrapper = document.getElementById('sectionsWrapper');
-
-wrapper.addEventListener('touchstart', e => {
-  touchStartX = e.changedTouches[0].screenX;
-}, { passive: true });
-
-wrapper.addEventListener('touchend', e => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-}, { passive: true });
-
-function handleSwipe() {
-  const diff = touchStartX - touchEndX;
-  if (Math.abs(diff) < 60) return; // threshold
-  if (diff > 0) {
-    // swipe left → next
-    goToSection(currentIndex + 1, 'right');
-  } else {
-    // swipe right → prev
-    goToSection(currentIndex - 1, 'left');
-  }
-}
-
-/* ========== QUANTITY ON CARD ========== */
-function changeCardQty(btn, delta) {
-  const card = btn.closest('.card');
-  const name = card.dataset.name;
-  const price = parseInt(card.dataset.price);
-  const wrap = card.querySelector('.qty-wrap');
-  const numEl = wrap.querySelector('.qty-num');
-
-  if (!cart[name]) cart[name] = { price, qty: 0 };
-  cart[name].qty += delta;
-  if (cart[name].qty <= 0) {
-    delete cart[name];
-    wrap.classList.remove('has-qty');
-    numEl.textContent = '0';
-  } else {
-    wrap.classList.add('has-qty');
-    numEl.textContent = cart[name].qty;
-  }
-
-  // animasi pop
-  const countEl = document.getElementById('cartCount');
-  countEl.classList.add('pop');
-  setTimeout(() => countEl.classList.remove('pop'), 300);
-
-  updateCartUI();
-}
-
-function syncAllCardQtys() {
-  document.querySelectorAll('.card').forEach(card => {
-    const name = card.dataset.name;
-    const wrap = card.querySelector('.qty-wrap');
-    const numEl = wrap.querySelector('.qty-num');
-    const qty = cart[name] ? cart[name].qty : 0;
-    if (qty > 0) {
-      wrap.classList.add('has-qty');
-      numEl.textContent = qty;
-    } else {
-      wrap.classList.remove('has-qty');
-      numEl.textContent = '0';
-    }
-  });
-}
-
-/* ========== CART ========== */
-function updateCartUI() {
-  let total = 0, count = 0;
-  for (let item in cart) {
-    total += cart[item].price * cart[item].qty;
-    count += cart[item].qty;
-  }
-  document.getElementById('cartCount').textContent = count;
-  document.getElementById('cartTotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
-
-  const bar = document.getElementById('cartBar');
-  if (count > 0) bar.classList.add('show');
-  else bar.classList.remove('show');
-}
-
-function openCart() { 
-  renderCartItems(); 
-  document.getElementById('cartModal').classList.add('show'); 
-}
-function closeCart() { 
-  document.getElementById('cartModal').classList.remove('show'); 
-}
-
-function renderCartItems() {
-  const container = document.getElementById('cartItems');
-  const empty = document.getElementById('cartEmpty');
-  const checkoutBtn = document.getElementById('checkoutBtn');
-
-  if (Object.keys(cart).length === 0) {
-    container.innerHTML = '';
-    empty.style.display = 'block';
-    checkoutBtn.style.display = 'none';
-    return;
-  }
-
-  empty.style.display = 'none';
-  checkoutBtn.style.display = 'block';
-
-  let html = '';
-  let total = 0;
-  for (let name in cart) {
-    const item = cart[name];
-    total += item.price * item.qty;
-    html += `
-      <div class="cart-item">
-        <div style="flex:1; padding-right:10px;">
-          <div class="cart-item-name">${name}</div>
-          <div class="cart-item-price">Rp ${(item.price * item.qty).toLocaleString('id-ID')}</div>
-        </div>
-        <div class="qty-control">
-          <button class="qty-btn-modal" onclick="changeQtyFromCart('${name}', -1)">−</button>
-          <span style="font-weight:600; width:22px; text-align:center">${item.qty}</span>
-          <button class="qty-btn-modal" onclick="changeQtyFromCart('${name}', 1)">+</button>
+function card(m, i, c, j){
+  const q = cart[i] || 0;
+  return `<article class="card" style="--i:${j}">
+    <div class="pic" data-e="${c.ico}">
+      <img src="image${m.img}.png" alt="${m.n}" loading="lazy" onerror="this.parentNode.classList.add('noimg')">
+      <span class="kcal">${m.k} kcal</span>
+    </div>
+    <div class="body">
+      <h3>${m.t || m.n}</h3>
+      <p>${m.d}</p>
+      <div class="foot">
+        <div class="price${m.pr ? ' rng' : ''}"><i>Rp</i>${m.pr || m.p.toLocaleString('id-ID')}</div>
+        <div class="step${q ? ' on' : ''}" id="st${i}">
+          <button class="minus" aria-label="Kurangi" onclick="chg(${i},-1)">−</button>
+          <span class="num">${q}</span>
+          <button class="plus" aria-label="Tambah" onclick="chg(${i},1,event)">+</button>
         </div>
       </div>
-    `;
-  }
-  html += `<div style="text-align:right; margin-top:20px; font-weight:700; font-size:1.15rem; color:#fff;">
-             Total: Rp ${total.toLocaleString('id-ID')}
-           </div>`;
-  container.innerHTML = html;
+    </div>
+  </article>`;
 }
 
-function changeQtyFromCart(name, delta) {
-  if (!cart[name]) return;
-  cart[name].qty += delta;
-  if (cart[name].qty <= 0) delete cart[name];
-  updateCartUI();
-  syncAllCardQtys();
-  renderCartItems();
+function render(dir){
+  const c = CATS[cur];
+  let h = `<div class="head"><h2>${c.title}</h2><div class="rule"></div>${NOTES[c.id] ? `<p class="note">${NOTES[c.id]}</p>` : ''}</div><div class="grid ${dir || 'r'}">`;
+  let j = 0;
+  MENU.forEach((m, i) => { if (m.c === c.id) h += card(m, i, c, j++); });
+  view.innerHTML = h + '</div>';
 }
 
-function checkout() {
-  if (Object.keys(cart).length === 0) return;
-  orderCounter++;
-  const orderId = 'BB-' + orderCounter;
+function go(i){
+  if (i < 0 || i >= CATS.length) return;
+  const dir = i >= cur ? 'r' : 'l';
+  cur = i;
+  [...tabs.children].forEach((t, k) => t.classList.toggle('on', k === i));
+  const t = tabs.children[i];
+  tabs.scrollTo({left: t.offsetLeft - (tabs.clientWidth - t.offsetWidth) / 2, behavior: 'smooth'});
+  render(dir);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
 
-  let listHtml = '';
-  let total = 0;
-  for (let name in cart) {
-    const item = cart[name];
-    total += item.price * item.qty;
-    listHtml += `
-      <div class="order-item">
-        <div>${name} <span style="color:#888; font-size:0.8rem; margin-left:6px">x${item.qty}</span></div>
-        <div style="font-weight:600">Rp ${(item.price * item.qty).toLocaleString('id-ID')}</div>
-      </div>
-    `;
-  }
-  listHtml += `<div style="text-align:right; font-size:1.2rem; font-weight:700; color:#fff; margin-top:16px;">Total: Rp ${total.toLocaleString('id-ID')}</div>`;
+/* geser kiri/kanan untuk ganti kategori */
+let sx = 0, sy = 0;
+view.addEventListener('touchstart', e => { sx = e.changedTouches[0].clientX; sy = e.changedTouches[0].clientY; }, {passive:true});
+view.addEventListener('touchend', e => {
+  const dx = sx - e.changedTouches[0].clientX, dy = sy - e.changedTouches[0].clientY;
+  if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.6) go(cur + (dx > 0 ? 1 : -1));
+}, {passive:true});
 
-  document.getElementById('orderIdDisplay').textContent = orderId;
-  document.getElementById('orderListDisplay').innerHTML = listHtml;
+/* ---------- keranjang ---------- */
+function chg(i, d, ev){
+  const q = (cart[i] || 0) + d;
+  if (q > 0) cart[i] = q; else delete cart[i];
+  if (ev && d > 0) fly(ev.currentTarget);
+  const s = $('st' + i);
+  if (s){ s.classList.toggle('on', q > 0); const n = s.querySelector('.num'); n.textContent = Math.max(q, 0); bump(n); }
+  refresh();
+}
 
+function refresh(){
+  let n = 0, t = 0;
+  for (const i in cart){ n += cart[i]; t += cart[i] * price(MENU[i]); }
+  $('cartCount').textContent = n;
+  $('cartTotal').textContent = rp(t);
+  const b = $('cartBadge'); b.textContent = n; b.classList.toggle('show', n > 0);
+  bump(b); bump($('cartCount'));
+  bar.classList.toggle('show', n > 0);
+  if (modal.classList.contains('show')) renderCart();
+}
+
+/* titik emas yang "terbang" ke keranjang saat menekan + */
+function fly(btn){
+  if (reduce) return;
+  const r = btn.getBoundingClientRect(), x = r.left + r.width / 2 - 7, y = r.top + r.height / 2 - 7;
+  const tx = (innerWidth - Math.min(innerWidth, 560)) / 2 + 26, ty = innerHeight - 38;
+  const d = document.createElement('div'); d.className = 'fly'; document.body.appendChild(d);
+  d.animate([
+    {transform:`translate(${x}px,${y}px) scale(1)`, opacity:1},
+    {transform:`translate(${(x + tx) / 2}px,${Math.min(y, ty) - 80}px) scale(1.15)`, opacity:1, offset:.45},
+    {transform:`translate(${tx}px,${ty}px) scale(.35)`, opacity:.5}
+  ], {duration:700, easing:'cubic-bezier(.4,0,.2,1)'}).onfinish = () => d.remove();
+}
+
+function openCart(){ renderCart(); modal.classList.add('show'); document.body.classList.add('locked'); }
+function closeCart(){
+  modal.classList.remove('show');
+  if (!cashier.classList.contains('show')) document.body.classList.remove('locked');
+}
+
+function renderCart(){
+  const ks = Object.keys(cart), none = !ks.length;
+  $('cartEmpty').style.display = none ? 'block' : 'none';
+  $('cartFoot').style.display = none ? 'none' : 'block';
+  let h = '', t = 0;
+  ks.forEach(i => {
+    const m = MENU[i], q = cart[i], s = price(m) * q; t += s;
+    h += `<div class="row">
+      <div class="rn"><b>${m.n}</b><span>${rp(s)}</span></div>
+      <div class="step on">
+        <button class="minus" aria-label="Kurangi" onclick="chg(${i},-1)">−</button>
+        <span class="num">${q}</span>
+        <button class="plus" aria-label="Tambah" onclick="chg(${i},1)">+</button>
+      </div></div>`;
+  });
+  $('cartItems').innerHTML = h;
+  $('sumTotal').textContent = rp(t);
+}
+
+/* ---------- layar kasir: daftar menu (tanpa nomor pesanan) ---------- */
+function showCashier(){
+  const ks = Object.keys(cart); if (!ks.length) return;
+  let h = '', t = 0, n = 0;
+  ks.forEach((i, k) => {
+    const m = MENU[i], q = cart[i], s = price(m) * q; t += s; n += q;
+    h += `<li style="--i:${k}"><span class="q">${q}×</span><span class="nm">${m.n}</span><span class="pr">${rp(s)}</span></li>`;
+  });
+  $('ticketList').innerHTML = h;
+  $('ticketTotal').textContent = rp(t);
+  $('ticketCount').textContent = '(' + n + ' item)';
   closeCart();
-  document.getElementById('orderSuccess').classList.add('show');
-  cart = {};
-  updateCartUI();
-  syncAllCardQtys();
+  cashier.classList.add('show');
+  document.body.classList.add('locked');
+  cashier.scrollTop = 0;
 }
+function closeCashier(){ cashier.classList.remove('show'); document.body.classList.remove('locked'); }
+function finishOrder(){ cart = {}; closeCashier(); render('r'); refresh(); }
 
-function newOrder() { 
-  document.getElementById('orderSuccess').classList.remove('show'); 
-}
-
-document.getElementById('cartModal').addEventListener('click', function(e) {
-  if (e.target === this) closeCart();
-});
+render('r');
+refresh();
 </script>
 </body>
 </html>
